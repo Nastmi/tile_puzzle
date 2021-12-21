@@ -1,1 +1,1 @@
-# tile_puzzle
+Projekt pri predmetu računalniška grafika.
