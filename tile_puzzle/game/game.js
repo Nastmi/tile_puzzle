@@ -7,6 +7,9 @@ import { Physics } from './Physics.js';
 import { Camera } from './Camera.js';
 import { SceneLoader } from './SceneLoader.js';
 import { SceneBuilder } from './SceneBuilder.js';
+import { TileHandler } from './TileHandler.js';
+import { InputHandler } from './InputHandler.js';
+
 
 class App extends Application {
 
@@ -29,7 +32,7 @@ class App extends Application {
         const builder = new SceneBuilder(scene);
         this.scene = builder.build();
         this.physics = new Physics(this.scene);
-
+        this.inputHandler = new InputHandler();
         // Find first camera.
         this.camera = null;
         this.scene.traverse(node => {
@@ -41,6 +44,8 @@ class App extends Application {
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);
+    
+        this.tileHandler = new TileHandler(this.scene, this.camera);
     }
 
     enableCamera() {
@@ -70,6 +75,10 @@ class App extends Application {
 
         if (this.physics) {
             this.physics.update(dt);
+        }
+
+        if(this.tileHandler) {
+            this.tileHandler.update(dt);
         }
     }
 

@@ -7,15 +7,11 @@ export class Camera extends Node {
 
     constructor(options) {
         super(options);
+        this.disabled = true;
         Utils.init(this, this.constructor.defaults, options);
-
         this.projection = mat4.create();
         this.updateProjection();
-
         this.mousemoveHandler = this.mousemoveHandler.bind(this);
-        this.keydownHandler = this.keydownHandler.bind(this);
-        this.keyupHandler = this.keyupHandler.bind(this);
-        this.keys = {};
     }
 
     updateProjection() {
@@ -31,28 +27,30 @@ export class Camera extends Node {
             Math.cos(c.rotation[1]), 0, -Math.sin(c.rotation[1]));
 
         // 1: add movement acceleration
-        let acc = vec3.create();
-        if (this.keys['KeyW']) {
-            vec3.add(acc, acc, forward);
-        }
-        if (this.keys['KeyS']) {
-            vec3.sub(acc, acc, forward);
-        }
-        if (this.keys['KeyD']) {
-            vec3.add(acc, acc, right);
-        }
-        if (this.keys['KeyA']) {
-            vec3.sub(acc, acc, right);
+        if(!this.disabled){
+            let acc = vec3.create();
+            if (globalThis.heldKeys['KeyW']) {
+                vec3.add(acc, acc, forward);
+            }
+            if (globalThis.heldKeys['KeyS']) {
+                vec3.sub(acc, acc, forward);
+            }
+            if (globalThis.heldKeys['KeyD']) {
+                vec3.add(acc, acc, right);
+            }
+            if (globalThis.heldKeys['KeyA']) {
+                vec3.sub(acc, acc, right);
+            }
+            vec3.scaleAndAdd(c.velocity, c.velocity, acc, dt * c.acceleration);
         }
 
         // 2: update velocity
-        vec3.scaleAndAdd(c.velocity, c.velocity, acc, dt * c.acceleration);
 
         // 3: if no movement, apply friction
-        if (!this.keys['KeyW'] &&
-            !this.keys['KeyS'] &&
-            !this.keys['KeyD'] &&
-            !this.keys['KeyA'])
+        if (!globalThis.heldKeys['KeyW'] &&
+            !globalThis.heldKeys['heldKeys'] &&
+            !globalThis.heldKeys['KeyD'] &&
+            !globalThis.heldKeys['KeyA'])
         {
             vec3.scale(c.velocity, c.velocity, 1 - c.friction);
         }
@@ -66,18 +64,12 @@ export class Camera extends Node {
 
     enable() {
         document.addEventListener('mousemove', this.mousemoveHandler);
-        document.addEventListener('keydown', this.keydownHandler);
-        document.addEventListener('keyup', this.keyupHandler);
+        this.disabled = false;
     }
 
     disable() {
         document.removeEventListener('mousemove', this.mousemoveHandler);
-        document.removeEventListener('keydown', this.keydownHandler);
-        document.removeEventListener('keyup', this.keyupHandler);
-
-        for (let key in this.keys) {
-            this.keys[key] = false;
-        }
+        this.disabled = true;
     }
 
     mousemoveHandler(e) {
@@ -100,14 +92,6 @@ export class Camera extends Node {
         }
 
         c.rotation[1] = ((c.rotation[1] % twopi) + twopi) % twopi;
-    }
-
-    keydownHandler(e) {
-        this.keys[e.code] = true;
-    }
-
-    keyupHandler(e) {
-        this.keys[e.code] = false;
     }
 
 }

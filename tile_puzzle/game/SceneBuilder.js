@@ -15,10 +15,11 @@ export class SceneBuilder {
     createNode(spec) {
         switch (spec.type) {
             case 'camera': return new Camera(spec);
+            case "tile":
             case 'model': {
                 const mesh = new Mesh(this.spec.meshes[spec.mesh]);
                 const texture = this.spec.textures[spec.texture];
-                return new Model(mesh, texture, spec);
+                return new Model(spec.type, mesh, texture, spec);
             }
             default: return new Node(spec);
         }
