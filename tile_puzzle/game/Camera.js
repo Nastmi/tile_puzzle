@@ -1,27 +1,25 @@
-import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
+import { vec3, mat4 } from '../lib/gl-matrix-module.js';
 
+import { Utils } from './Utils.js';
 import { Node } from './Node.js';
 
 export class Camera extends Node {
 
-    constructor() {
-        super();
+    constructor(options) {
+        super(options);
+        Utils.init(this, this.constructor.defaults, options);
 
-        Object.assign(this, {
-            projection       : mat4.create(),
-            rotation         : vec3.set(vec3.create(), 0, 0, 0),
-            translation      : vec3.set(vec3.create(), 0, 2, 0),
-            velocity         : vec3.set(vec3.create(), 0, 0, 0),
-            mouseSensitivity : 0.002,
-            maxSpeed         : 3,
-            friction         : 0.2,
-            acceleration     : 20
-        });
+        this.projection = mat4.create();
+        this.updateProjection();
 
         this.mousemoveHandler = this.mousemoveHandler.bind(this);
         this.keydownHandler = this.keydownHandler.bind(this);
         this.keyupHandler = this.keyupHandler.bind(this);
         this.keys = {};
+    }
+
+    updateProjection() {
+        mat4.perspective(this.projection, this.fov, this.aspect, this.near, this.far);
     }
 
     update(dt) {
@@ -64,16 +62,6 @@ export class Camera extends Node {
         if (len > c.maxSpeed) {
             vec3.scale(c.velocity, c.velocity, c.maxSpeed / len);
         }
-
-        // 5: update translation
-        vec3.scaleAndAdd(c.translation, c.translation, c.velocity, dt);
-
-        // 6: update the final transform
-        const t = c.transform;
-        mat4.identity(t);
-        mat4.translate(t, t, c.translation);
-        mat4.rotateY(t, t, c.rotation[1]);
-        mat4.rotateX(t, t, c.rotation[0]);
     }
 
     enable() {
@@ -123,3 +111,15 @@ export class Camera extends Node {
     }
 
 }
+
+Camera.defaults = {
+    aspect           : 1,
+    fov              : 1.5,
+    near             : 0.01,
+    far              : 100,
+    velocity         : [0, 0, 0],
+    mouseSensitivity : 0.002,
+    maxSpeed         : 3,
+    friction         : 0.2,
+    acceleration     : 20
+};

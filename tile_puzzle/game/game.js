@@ -1,6 +1,6 @@
-import { GUI } from '../../lib/dat.gui.module.js';
+import { GUI } from '../lib/dat.gui.module.js';
 
-import { Application } from '../../common/engine/Application.js';
+import { Application } from '../common/engine/Application.js';
 
 import { Renderer } from './Renderer.js';
 import { Physics } from './Physics.js';
@@ -21,7 +21,7 @@ class App extends Application {
         this.pointerlockchangeHandler = this.pointerlockchangeHandler.bind(this);
         document.addEventListener('pointerlockchange', this.pointerlockchangeHandler);
 
-        this.load('scene.json');
+        this.load('game/scene.json');
     }
 
     async load(uri) {
