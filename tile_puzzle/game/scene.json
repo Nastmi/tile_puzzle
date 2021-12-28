@@ -41,39 +41,6 @@
         "max": [0.5, 0.5, 0.5]
       },
       "translation": [0, 1, -5]
-    },
-    {
-      "type": "model",
-      "mesh": 0,
-      "texture": 0,
-      "aabb": {
-        "min": [-3.5, -1, -1],
-        "max": [3.5, 1, 1]
-      },
-      "translation": [8, 1, -1],
-      "scale": [3.5, 1, 1]
-    },
-    {
-      "type": "tile",
-      "mesh": 0,
-      "texture": 2,
-      "aabb": {
-        "min": [-0.5, -0.1, -0.5],
-        "max": [0.5, 0.1, 0.5]
-      },
-      "translation": [2, 0, 0],
-      "scale": [0.5, 0.1, 0.5]
-    },
-    {
-      "type": "tile",
-      "mesh": 0,
-      "texture": 2,
-      "aabb": {
-        "min": [-0.5, -0.1, -0.5],
-        "max": [0.5, 0.1, 0.5]
-      },
-      "translation": [-2, 0, 0],
-      "scale": [0.5, 0.1, 0.5]
     }
   ],
   "textures": [
@@ -84,5 +51,16 @@
   "meshes": [
     "../common/models/cube.json",
     "../common/models/pyramid.json"
-  ]
+  ],
+  "num":4,
+  "pLocations": [
+    [-2, 0, 1],
+    [2, 0, 5],
+    [3, 0, -2],
+    [4, 0, -1],
+    [-1, 0, 7],
+    [-3, 0, 2],
+    [-4, 0, 1]
+  ],
+  "locations": []
 }

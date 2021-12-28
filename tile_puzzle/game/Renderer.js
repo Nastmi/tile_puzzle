@@ -26,7 +26,7 @@ export class Renderer {
         scene.nodes.forEach(node => {
             node.gl = {};
             if (node.mesh) {
-                Object.assign(node.gl, this.createModel(node.mesh));
+                Object.assign(node.gl, this.createModel(node.mesh, node.type == "tile"));
             }
             if (node.image) {
                 node.gl.texture = this.createTexture(node.image);
@@ -69,7 +69,7 @@ export class Renderer {
         );
     }
 
-    createModel(model) {
+    createModel(model, topOnly) {
         const gl = this.gl;
 
         const vao = gl.createVertexArray();
@@ -80,10 +80,18 @@ export class Renderer {
         gl.enableVertexAttribArray(0);
         gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(model.texcoords), gl.STATIC_DRAW);
-        gl.enableVertexAttribArray(1);
-        gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
+        if(topOnly){
+            gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(model.toponly), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(1);
+            gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
+        }
+        else{
+            gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(model.texcoords), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(1);
+            gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
+        }
 
         gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(model.normals), gl.STATIC_DRAW);

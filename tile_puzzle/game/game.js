@@ -10,7 +10,6 @@ import { SceneBuilder } from './SceneBuilder.js';
 import { TileHandler } from './TileHandler.js';
 import { InputHandler } from './InputHandler.js';
 
-
 class App extends Application {
 
     start() {
@@ -44,7 +43,7 @@ class App extends Application {
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
         this.renderer.prepare(this.scene);
-    
+        //Create a handler for tiles
         this.tileHandler = new TileHandler(this.scene, this.camera);
     }
 
