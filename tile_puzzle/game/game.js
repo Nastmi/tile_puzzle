@@ -19,7 +19,7 @@ class App extends Application {
         this.time = Date.now();
         this.startTime = this.time;
         this.aspect = 1;
-
+        
         this.pointerlockchangeHandler = this.pointerlockchangeHandler.bind(this);
         document.addEventListener('pointerlockchange', this.pointerlockchangeHandler);
 
