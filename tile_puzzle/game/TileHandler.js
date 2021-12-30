@@ -1,7 +1,7 @@
 //Class for handling "puzzle tiles".
 
 import { vec3, mat4 } from '../lib/gl-matrix-module.js';
-import { aabbIntersection } from './PhysicsFunctions.js';
+import { aabbIntersection, lineBoxIntersection } from './PhysicsFunctions.js';
 
 export class TileHandler{
 
@@ -16,6 +16,9 @@ export class TileHandler{
             if (node.type == "tile") {
                 this.addTile(node);
             }
+            else if(node.type == "grid_piece"){
+                this.checkGridCollision(node)
+            }
         });
 
         //if atleast one tile is picked up, and v is pressed, place it
@@ -25,6 +28,15 @@ export class TileHandler{
                 globalThis.onceKeys['KeyV'] = false;
             }
         }
+
+    }
+
+    checkGridCollision(node){
+        let n = this.camera.translation.slice();
+        let f = this.camera.getFarPoint();
+        let hit = lineBoxIntersection(node.aabb.min, node.aabb.max, n, f, true);
+        if(hit)
+            console.log("hitted");
     }
 
     addTile(node) {

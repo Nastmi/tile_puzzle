@@ -39,9 +39,10 @@ class App extends Application {
                 this.camera = node;
             }
         });
-
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
+        this.scene.addNode(this.camera.farPoint);
+        
         this.renderer.prepare(this.scene);
         //Create a handler for tiles
         this.tileHandler = new TileHandler(this.scene, this.camera);
@@ -67,7 +68,6 @@ class App extends Application {
         const t = this.time = Date.now();
         const dt = (this.time - this.startTime) * 0.001;
         this.startTime = this.time;
-
         if (this.camera) {
             this.camera.update(dt);
         }

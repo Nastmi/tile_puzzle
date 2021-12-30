@@ -14,7 +14,21 @@ export class SceneBuilder {
 
     createNode(spec) {
         switch (spec.type) {
-            case 'camera': return new Camera(spec);
+            case 'camera': {
+                let farPoint = this.createNode({
+                    "type": "model",
+                    "mesh": 0,
+                    "texture": 2,
+                    "aabb": {
+                      "min": [-0.2, -0.2, -0.2],
+                      "max": [0.2, 0.2, 0.2]
+                    },
+                    "translation": [0, 0, -1],
+                    "scale": [0.2, 0.2, 0.2]
+                });
+                return new Camera(spec, farPoint);
+            }
+            case "grid_piece":
             case "tile":
             case 'model': {
                 const mesh = new Mesh(this.spec.meshes[spec.mesh]);

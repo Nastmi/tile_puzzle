@@ -32,6 +32,11 @@ export class Node {
         }
     }
 
+    getQuat(){
+        const degrees = this.rotation.map(x => x * 180 / Math.PI);
+        return quat.fromEuler(quat.create(), ...degrees);
+    }
+
     addChild(node) {
         this.children.push(node);
         node.parent = this;

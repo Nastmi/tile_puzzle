@@ -5,13 +5,14 @@ import { Node } from './Node.js';
 
 export class Camera extends Node {
 
-    constructor(options) {
+    constructor(options, farPoint) {
         super(options);
         this.disabled = true;
         Utils.init(this, this.constructor.defaults, options);
         this.projection = mat4.create();
         this.updateProjection();
         this.mousemoveHandler = this.mousemoveHandler.bind(this);
+        this.farPoint = farPoint;
     }
 
     updateProjection() {
@@ -60,6 +61,18 @@ export class Camera extends Node {
         if (len > c.maxSpeed) {
             vec3.scale(c.velocity, c.velocity, c.maxSpeed / len);
         }
+        let x = this.transform[8];
+        let y = this.transform[9];
+        let z = this.transform[10];
+        let vec = new vec3.fromValues(x, y, z);
+        vec3.scale(vec, vec, -3);
+        vec3.add(vec, vec, this.translation)
+        this.farPoint.translation = vec;
+        this.farPoint.updateTransform();
+    }
+
+    getFarPoint(){
+        return this.farPoint;
     }
 
     enable() {

@@ -13,11 +13,11 @@ export class SceneLoader {
                 "mesh": 0,
                 "texture": curLength+i,
                 "aabb": {
-                    "min": [-0.5, -0.1, -0.5],
-                    "max": [0.5, 0.1, 0.5]
+                    "min": [-0.5, -0.05, -0.5],
+                    "max": [0.5, 0.05, 0.5]
                 },
                 "translation": scene.pLocations[randIdx],
-                "scale": [0.5, 0.1, 0.5]
+                "scale": [0.5, 0.05, 0.5]
             })
             //Store the selected location for later.
             scene.locations.push(scene.pLocations[randIdx]);
