@@ -10,101 +10,27 @@ function intervalIntersection(min1, max1, min2, max2) {
     return !(min1 > max2 || min2 > max1);
 }
 
-export function lineBoxIntersection( min, max, p1, p2, hit)
-{
-    if (p2[0] < min[0] && p1[0] < min[0]) return false;
-    if (p2[0] > max[0] && p1[0] > max[0]) return false;
-    if (p2[1] < min[1] && p1[1] < min[1]) return false;
-    if (p2[1] > max[1] && p1[1] > max[1]) return false;
-    if (p2[2] < min[2] && p1[2] < min[2]) return false;
-    if (p2[2] > max[2] && p1[2] > max[2]) return false;
-    if (p1[0] > min[0] && p1[0] < max[0] &&
-        p1[1] > min[1] && p1[1] < max[1] &&
-        p1[2] > min[2] && p1[2] < max[2])
-    {
-        vec3.set( p1, hit);
-        return true;
-    }
-
-    if ((getIntersection(p1[0] - min[0], p2[0] - min[0], p1, p2, hit) && inBox(hit, min, max, 1))
-      || (getIntersection(p1[1] - min[1], p2[1] - min[1], p1, p2, hit) && inBox(hit, min, max, 2))
-      || (getIntersection(p1[2] - min[2], p2[2] - min[2], p1, p2, hit) && inBox(hit, min, max, 3))
-      || (getIntersection(p1[0] - max[0], p2[0] - max[0], p1, p2, hit) && inBox(hit, min, max, 1))
-      || (getIntersection(p1[1] - max[1], p2[1] - max[1], p1, p2, hit) && inBox(hit, min, max, 2))
-      || (getIntersection(p1[2] - max[2], p2[2] - max[2], p1, p2, hit) && inBox(hit, min, max, 3)))
-        return true;
-
-    return false;
-}
-
-let temp = vec3.create();
-function getIntersection( fDst1, fDst2, P1, P2, hit)
-{
-    if ((fDst1 * fDst2) >= 0) return false;
-    if (fDst1 == fDst2) return false;
-
-    vec3.subtract(P2, P1, temp);
-    vec3.scale( temp, (-fDst1 / (fDst2 - fDst1)));
-    vec3.add( temp, P1, hit);
-
+export function lineBoxIntersection(p1, p2, min, max){
+    let d = vec3.subtract(vec3.create(), p2, p1);
+    vec3.scale(d, d, 0.5);
+    let e = vec3.subtract(vec3.create(), max, min);
+    vec3.scale(e, e, 0.5);
+    let c = vec3.add(vec3.create(), max, min);
+    vec3.scale(c, c, 0.5);
+    let temp = vec3.add(vec3.create(), p1, d);
+    vec3.subtract(c, temp, c);
+    let ad = d.map(el => Math.abs(el));
+    if (Math.abs(c[0]) > e[0] + ad[0])        
+        return false;    
+    if (Math.abs(c[1]) > e[1] + ad[1])        
+        return false;    
+    if (Math.abs(c[2]) > e[2] + ad[2])        
+        return false;      
+    if (Math.abs(d[1] * c[2] - d[2] * c[1]) > e[1] * ad[2] + e[2] * ad[1])        
+        return false;    
+    if (Math.abs(d[2] * c[0] - d[0] * c[2]) > e[2] * ad[0] + e[0] * ad[2])        
+        return false;    
+    if (Math.abs(d[0] * c[1] - d[1] * c[0]) > e[0] * ad[1] + e[1] * ad[0])        
+        return false;                
     return true;
 }
-
-function inBox(hit, min, max, Axis)
-{
-    if (Axis == 1 && hit[2] > min[2] && hit[2] < max[2] && hit[1] > min[1] && hit[1] < max[1]) return true;
-    if (Axis == 2 && hit[2] > min[2] && hit[2] < max[2] && hit[0] > min[0] && hit[0] < max[0]) return true;
-    if (Axis == 3 && hit[0] > min[0] && hit[0] < max[0] && hit[1] > min[1] && hit[1] < max[1]) return true;
-    return false;
-}
-
-/*
-// all args are Vec3, hit will be filled by this algo
-function checkLineBox( min, max, p1, p2, hit)
-{
-    if (p2[0] < min[0] && p1[0] < min[0]) return false;
-    if (p2[0] > max[0] && p1[0] > max[0]) return false;
-    if (p2[1] < min[1] && p1[1] < min[1]) return false;
-    if (p2[1] > max[1] && p1[1] > max[1]) return false;
-    if (p2[2] < min[2] && p1[2] < min[2]) return false;
-    if (p2[2] > max[2] && p1[2] > max[2]) return false;
-    if (p1[0] > min[0] && p1[0] < max[0] &&
-        p1[1] > min[1] && p1[1] < max[1] &&
-        p1[2] > min[2] && p1[2] < max[2])
-    {
-        vec3.set( p1, hit);
-        return true;
-    }
-
-    if ((getIntersection(p1[0] - min[0], p2[0] - min[0], p1, p2, hit) && inBox(hit, min, max, 1))
-      || (getIntersection(p1[1] - min[1], p2[1] - min[1], p1, p2, hit) && inBox(hit, min, max, 2))
-      || (getIntersection(p1[2] - min[2], p2[2] - min[2], p1, p2, hit) && inBox(hit, min, max, 3))
-      || (getIntersection(p1[0] - max[0], p2[0] - max[0], p1, p2, hit) && inBox(hit, min, max, 1))
-      || (getIntersection(p1[1] - max[1], p2[1] - max[1], p1, p2, hit) && inBox(hit, min, max, 2))
-      || (getIntersection(p1[2] - max[2], p2[2] - max[2], p1, p2, hit) && inBox(hit, min, max, 3)))
-        return true;
-
-    return false;
-}
-
-let temp = vec3.create();
-function getIntersection( fDst1, fDst2, P1, P2, hit)
-{
-    if ((fDst1 * fDst2) >= 0) return false;
-    if (fDst1 == fDst2) return false;
-
-    vec3.subtract(P2, P1, temp);
-    vec3.scale( temp, (-fDst1 / (fDst2 - fDst1)));
-    vec3.add( temp, P1, hit);
-
-    return true;
-}
-
-function inBox(hit, min, max, Axis)
-{
-    if (Axis == 1 && hit[2] > min[2] && hit[2] < max[2] && hit[1] > min[1] && hit[1] < max[1]) return true;
-    if (Axis == 2 && hit[2] > min[2] && hit[2] < max[2] && hit[0] > min[0] && hit[0] < max[0]) return true;
-    if (Axis == 3 && hit[0] > min[0] && hit[0] < max[0] && hit[1] > min[1] && hit[1] < max[1]) return true;
-    return false;
-}
-*/

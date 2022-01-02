@@ -9,6 +9,7 @@ import { SceneLoader } from './SceneLoader.js';
 import { SceneBuilder } from './SceneBuilder.js';
 import { TileHandler } from './TileHandler.js';
 import { InputHandler } from './InputHandler.js';
+import { Gui } from "./gui.js";
 
 class App extends Application {
 
@@ -28,6 +29,7 @@ class App extends Application {
 
     async load(uri) {
         const scene = await new SceneLoader().loadScene(uri);
+        globalThis.gui = new Gui(scene.id);
         const builder = new SceneBuilder(scene);
         this.scene = builder.build();
         this.physics = new Physics(this.scene);
@@ -41,7 +43,6 @@ class App extends Application {
         });
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
-        this.scene.addNode(this.camera.farPoint);
         
         this.renderer.prepare(this.scene);
         //Create a handler for tiles
@@ -78,6 +79,10 @@ class App extends Application {
 
         if(this.tileHandler) {
             this.tileHandler.update(dt);
+        }
+
+        if(this.gui){
+            this.gui.update();
         }
     }
 

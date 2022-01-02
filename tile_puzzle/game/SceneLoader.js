@@ -7,8 +7,9 @@ export class SceneLoader {
         for(let i = 0; i < scene.num; i++){
             //Get index of random location.
             let randIdx = Math.floor(Math.random()*scene.pLocations.length);
-            scene.textures.push("../common/images/puzzle_0/"+i+".png");
+            scene.textures.push("../common/images/puzzle_"+scene.id+"/"+i+".png");
             scene.nodes.push({
+                "id": i,
                 "type": "tile",
                 "mesh": 0,
                 "texture": curLength+i,
