@@ -9,72 +9,72 @@ export class TileHandler{
         this.scene = scene;
         this.camera = camera;
         this.picked = [];
+        this.selected = 0;
     }
 
     update(dt) {
         this.scene.traverse(node => {
             if (node.type == "tile") {
-                this.addTile(node);
+                if(this.checkRayCollision(node) && globalThis.onceKeys['KeyE']){
+                    this.addTile(node);
+                    globalThis.onceKeys['KeyE'] = false;
+                    globalThis.gui.updatePicked(this.picked, this.selected);
+                }
             }
             else if(node.type == "grid_piece"){
-                this.checkGridCollision(node)
+                this.checkRayCollision(node)
             }
         });
 
         //if atleast one tile is picked up, and v is pressed, place it
         if(this.picked.length > 0){
-            if(globalThis.onceKeys['KeyV']){
-                this.scene.addNode(this.picked.pop());
-                globalThis.onceKeys['KeyV'] = false;
+            if(globalThis.onceKeys['KeyQ'] && this.picked.length > 0){
+                this.removeTile();
+                globalThis.gui.updatePicked(this.picked, this.selected);
             }
         }
 
+        for(let i = 0; i < this.picked.length; i++){
+            if(globalThis.onceKeys["Digit"+(i+1)]){
+                this.selected = i;
+                globalThis.gui.updatePicked(this.picked, this.selected);
+            }
+        }
+
+        console.log(this.selected);
+
     }
 
-    checkGridCollision(node){
+    checkRayCollision(node){
         let n = this.camera.translation.slice();
-        let f = this.camera.getFarPoint().translation.slice();
+        let f = this.camera.getFarPoint();
         const tnode = node.getGlobalTransform();
         const pos = mat4.getTranslation(vec3.create(), tnode);
         const min = vec3.add(vec3.create(), pos, node.aabb.min);
         const max = vec3.add(vec3.create(), pos, node.aabb.max);
-        let hit = lineBoxIntersection(min, max, f, n, false);
-        if(hit)
-            console.log("hitted");
+        let hit = lineBoxIntersection(n, f, min, max);
+        return hit;
     }
 
     addTile(node) {
-            // Update bounding boxes with global translation.
-            const ta = node.getGlobalTransform();
-            const tb = this.camera.getGlobalTransform();
-    
-            const posa = mat4.getTranslation(vec3.create(), ta);
-            const posb = mat4.getTranslation(vec3.create(), tb);
-            const mina = vec3.add(vec3.create(), posa, node.aabb.min);
-            const maxa = vec3.add(vec3.create(), posa, node.aabb.max);
-            const minb = vec3.add(vec3.create(), posb, this.camera.aabb.min);
-            const maxb = vec3.add(vec3.create(), posb, this.camera.aabb.max);
-    
-            // Check if there is collision.
-            const isColliding = aabbIntersection({
-                min: mina,
-                max: maxa
-            }, {
-                min: minb,
-                max: maxb
-            });
-    
-            if (!isColliding) {
-                return;
-            }
-
-            //If there is collision, add tile to the picked tiles, and remove it from scene.
             this.picked.push(node);
             this.scene.removeNode(node);
     }
 
+    removeTile(node){
+        this.scene.addNode(this.picked[this.selected]);
+        this.picked.splice(this.selected, 1);
+        globalThis.onceKeys['KeyQ'] = false;
+        if(this.selected >= this.picked.length)
+                this.selected = Math.max(this.selected--, 0);
+    }
+
     intervalIntersection(min1, max1, min2, max2) {
         return !(min1 > max2 || min2 > max1);
+    }
+
+    getPicked(){
+        return this.picked;
     }
 
 

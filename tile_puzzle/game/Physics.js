@@ -13,7 +13,7 @@ export class Physics {
                 vec3.scaleAndAdd(node.translation, node.translation, node.velocity, dt);
                 node.updateTransform();
                 this.scene.traverse(other => {
-                    if (node !== other && other.type != "tile") {
+                    if (node !== other) {
                         this.resolveCollision(node, other);
                     }
                 });
