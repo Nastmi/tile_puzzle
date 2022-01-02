@@ -10,6 +10,9 @@ function intervalIntersection(min1, max1, min2, max2) {
     return !(min1 > max2 || min2 > max1);
 }
 
+
+/*let temp = vec3.create();
+
 export function lineBoxIntersection( min, max, p1, p2, hit)
 {
     if (p2[0] < min[0] && p1[0] < min[0]) return false;
@@ -26,6 +29,10 @@ export function lineBoxIntersection( min, max, p1, p2, hit)
         return true;
     }
 
+    let temp = p2.slice();
+    p2 = p1.slice();
+    p1 = temp.slice();
+
     if ((getIntersection(p1[0] - min[0], p2[0] - min[0], p1, p2, hit) && inBox(hit, min, max, 1))
       || (getIntersection(p1[1] - min[1], p2[1] - min[1], p1, p2, hit) && inBox(hit, min, max, 2))
       || (getIntersection(p1[2] - min[2], p2[2] - min[2], p1, p2, hit) && inBox(hit, min, max, 3))
@@ -37,7 +44,6 @@ export function lineBoxIntersection( min, max, p1, p2, hit)
     return false;
 }
 
-let temp = vec3.create();
 function getIntersection( fDst1, fDst2, P1, P2, hit)
 {
     if ((fDst1 * fDst2) >= 0) return false;
@@ -57,7 +63,7 @@ function inBox(hit, min, max, Axis)
     if (Axis == 3 && hit[0] > min[0] && hit[0] < max[0] && hit[1] > min[1] && hit[1] < max[1]) return true;
     return false;
 }
-
+*/
 /*
 // all args are Vec3, hit will be filled by this algo
 function checkLineBox( min, max, p1, p2, hit)

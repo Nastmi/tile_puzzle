@@ -33,8 +33,12 @@ export class TileHandler{
 
     checkGridCollision(node){
         let n = this.camera.translation.slice();
-        let f = this.camera.getFarPoint();
-        let hit = lineBoxIntersection(node.aabb.min, node.aabb.max, n, f, true);
+        let f = this.camera.getFarPoint().translation.slice();
+        const tnode = node.getGlobalTransform();
+        const pos = mat4.getTranslation(vec3.create(), tnode);
+        const min = vec3.add(vec3.create(), pos, node.aabb.min);
+        const max = vec3.add(vec3.create(), pos, node.aabb.max);
+        let hit = lineBoxIntersection(min, max, f, n, false);
         if(hit)
             console.log("hitted");
     }
