@@ -5,6 +5,7 @@ import { Model } from './Model.js';
 import { Camera } from './Camera.js';
 
 import { Scene } from './Scene.js';
+import { Player } from './Player.js';
 
 export class SceneBuilder {
 
@@ -16,6 +17,9 @@ export class SceneBuilder {
         switch (spec.type) {
             case 'camera': {
                 return new Camera(spec);
+            }
+            case 'player': {
+                return new Player(spec);
             }
             case "grid_piece":
             case "tile":

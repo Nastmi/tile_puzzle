@@ -5,6 +5,7 @@ import { Application } from '../common/engine/Application.js';
 import { Renderer } from './Renderer.js';
 import { Physics } from './Physics.js';
 import { Camera } from './Camera.js';
+import { Player } from './Player.js';
 import { SceneLoader } from './SceneLoader.js';
 import { SceneBuilder } from './SceneBuilder.js';
 import { TileHandler } from './TileHandler.js';
@@ -35,18 +36,32 @@ class App extends Application {
         this.physics = new Physics(this.scene);
         this.inputHandler = new InputHandler();
         // Find first camera.
+        this.player = null;
+        this.scene.traverse(node => {
+            if (node instanceof Player) {
+                this.player = node;
+            }
+        });
+
+        //camera for minimap
         this.camera = null;
         this.scene.traverse(node => {
             if (node instanceof Camera) {
                 this.camera = node;
             }
         });
+
+        this.player.aspect = this.aspect;
+        this.player.updateProjection();
+        //this.scene.addNode(this.player.farPoint);
+
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
-        
+        //this.scene.addNode(this.camera.farPoint);
+
         this.renderer.prepare(this.scene);
         //Create a handler for tiles
-        this.tileHandler = new TileHandler(this.scene, this.camera);
+        this.tileHandler = new TileHandler(this.scene, this.player, this.camera);
     }
 
     enableCamera() {
@@ -54,14 +69,14 @@ class App extends Application {
     }
 
     pointerlockchangeHandler() {
-        if (!this.camera) {
+        if (!this.player) {
             return;
         }
 
         if (document.pointerLockElement === this.canvas) {
-            this.camera.enable();
+            this.player.enable();
         } else {
-            this.camera.disable();
+            this.player.disable();
         }
     }
 
@@ -69,8 +84,8 @@ class App extends Application {
         const t = this.time = Date.now();
         const dt = (this.time - this.startTime) * 0.001;
         this.startTime = this.time;
-        if (this.camera) {
-            this.camera.update(dt);
+        if (this.player) {
+            this.player.update(dt);
         }
 
         if (this.physics) {
@@ -88,7 +103,7 @@ class App extends Application {
 
     render() {
         if (this.scene) {
-            this.renderer.render(this.scene, this.camera);
+            this.renderer.render(this.scene, this.player, this.camera);
         }
     }
 
@@ -96,9 +111,9 @@ class App extends Application {
         const w = this.canvas.clientWidth;
         const h = this.canvas.clientHeight;
         this.aspect = w / h;
-        if (this.camera) {
-            this.camera.aspect = this.aspect;
-            this.camera.updateProjection();
+        if (this.player) {
+            this.player.aspect = this.aspect;
+            this.player.updateProjection();
         }
     }
 

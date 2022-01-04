@@ -34,29 +34,32 @@ export class Renderer {
         });
     }
 
-    render(scene, camera) {
+    render(scene, player, camera) {
         const gl = this.gl;
+
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.disable(gl.SCISSOR_TEST);
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         const program = this.programs.simple;
         gl.useProgram(program.program);
 
-        let matrix = mat4.create();
-        let matrixStack = [];
+        let matrixPlayer = mat4.create();
+        let matrixPlayerStack = [];
 
-        const viewMatrix = camera.getGlobalTransform();
+        const viewMatrix = player.getGlobalTransform();
         mat4.invert(viewMatrix, viewMatrix);
-        mat4.copy(matrix, viewMatrix);
-        gl.uniformMatrix4fv(program.uniforms.uProjection, false, camera.projection);
+        mat4.copy(matrixPlayer, viewMatrix);
+        gl.uniformMatrix4fv(program.uniforms.uProjection, false, player.projection);
 
         scene.traverse(
             node => {
-                matrixStack.push(mat4.clone(matrix));
-                mat4.mul(matrix, matrix, node.transform);
+                matrixPlayerStack.push(mat4.clone(matrixPlayer));
+                mat4.mul(matrixPlayer, matrixPlayer, node.transform);
                 if (node.gl.vao) {
                     gl.bindVertexArray(node.gl.vao);
-                    gl.uniformMatrix4fv(program.uniforms.uViewModel, false, matrix);
+                    gl.uniformMatrix4fv(program.uniforms.uViewModel, false, matrixPlayer);
                     gl.activeTexture(gl.TEXTURE0);
                     gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
                     gl.uniform1i(program.uniforms.uTexture, 0);
@@ -64,7 +67,46 @@ export class Renderer {
                 }
             },
             node => {
-                matrix = matrixStack.pop();
+                matrixPlayer = matrixPlayerStack.pop();
+            }
+        );
+
+        // test draw mini map
+        const miniMapWidth = 400;
+        const miniMapHeight = 400;
+        const miniMapX = gl.canvas.width - miniMapWidth;
+        const miniMapY = gl.canvas.height - miniMapHeight;
+        gl.viewport(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
+        gl.scissor(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
+        gl.enable(gl.SCISSOR_TEST);
+
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        gl.useProgram(program.program);
+
+        let matrixCamera = mat4.create();
+        let matrixCameraStack = [];
+
+        const viewMatrix2 = camera.getGlobalTransform();
+        mat4.invert(viewMatrix2, viewMatrix2);
+        mat4.copy(matrixCamera, viewMatrix2);
+        gl.uniformMatrix4fv(program.uniforms.uProjection, false, camera.projection);
+
+        scene.traverse(
+            node => {
+                matrixCameraStack.push(mat4.clone(matrixCamera));
+                mat4.mul(matrixCamera, matrixCamera, node.transform);
+                if (node.gl.vao) {
+                    gl.bindVertexArray(node.gl.vao);
+                    gl.uniformMatrix4fv(program.uniforms.uViewModel, false, matrixCamera);
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
+                    gl.uniform1i(program.uniforms.uTexture, 0);
+                    gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
+                }
+            },
+            node => {
+                matrixCamera = matrixCameraStack.pop();
             }
         );
     }
