@@ -13,6 +13,7 @@ export class Player extends Node {
         this.projection = mat4.create();
         this.updateProjection();
         this.mousemoveHandler = this.mousemoveHandler.bind(this);
+        //farPoint defines how far a tile can be for it to be interactable. It is always placed the same distance away from the player.
         this.farPoint = this.translation.slice();
     }
 
@@ -62,11 +63,15 @@ export class Player extends Node {
         if (len > c.maxSpeed) {
             vec3.scale(c.velocity, c.velocity, c.maxSpeed / len);
         }
+
+        //Update the farPoint. First get forward vector, to find out where the player is facing.
         let x = this.transform[8];
         let y = this.transform[9];
         let z = this.transform[10];
         let vec = new vec3.fromValues(x, y, z);
+        //Scale the vector by the distance.
         vec3.scale(vec, vec, -5);
+        //Add the players location to the vector, to get the new farPoint.
         vec3.add(vec, vec, this.translation)
         this.farPoint = vec;
         this.farPoint;

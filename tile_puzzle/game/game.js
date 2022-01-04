@@ -16,15 +16,12 @@ class App extends Application {
 
     start() {
         const gl = this.gl;
-
         this.renderer = new Renderer(gl);
         this.time = Date.now();
         this.startTime = this.time;
         this.aspect = 1;
-        
         this.pointerlockchangeHandler = this.pointerlockchangeHandler.bind(this);
         document.addEventListener('pointerlockchange', this.pointerlockchangeHandler);
-
         this.load('game/scene.json');
     }
 

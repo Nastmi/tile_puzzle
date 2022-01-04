@@ -21,6 +21,7 @@ export class SceneBuilder {
             case 'player': {
                 return new Player(spec);
             }
+            case "pointer":
             case "grid_piece":
             case "tile":
             case 'model': {

@@ -10,15 +10,10 @@ export class Camera extends Node {
         Utils.init(this, this.constructor.defaults, options);
         this.projection = mat4.create();
         this.updateProjection();
-        this.farPoint = this.translation.slice();
     }
 
     updateProjection() {
         mat4.perspective(this.projection, this.fov, this.aspect, this.near, this.far);
-    }
-
-    getFarPoint(){
-        return this.farPoint;
     }
 }
 

@@ -10,20 +10,44 @@ export class SceneLoader {
             scene.textures.push("../common/images/puzzle_"+scene.id+"/"+i+".png");
             scene.nodes.push({
                 "id": i,
+                "on_grid": false,
+                "correct": false,
+                "grid": null,
                 "type": "tile",
                 "mesh": 0,
                 "texture": curLength+i,
                 "aabb": {
-                    "min": [-0.5, -0.05, -0.5],
-                    "max": [0.5, 0.05, 0.5]
+                    "min": [-0.5, -0.02, -0.5],
+                    "max": [0.5, 0.02, 0.5]
                 },
                 "translation": scene.pLocations[randIdx],
-                "scale": [0.5, 0.05, 0.5]
+                "scale": [0.5, 0.02, 0.5]
             })
             //Store the selected location for later.
             scene.locations.push(scene.pLocations[randIdx]);
             //Remove location from possible choices
             scene.pLocations.splice(randIdx, 1);
+
+            //Add a grid piece for this node
+            let baseLoc = scene.grid_location.slice();
+            let x = Math.floor(i/2);
+            let y = i%2;
+            baseLoc[0] -= x*1;
+            baseLoc[2] += y*1;
+            scene.nodes.push({
+                "id": i,
+                "type": "grid_piece",
+                "filled": false,
+                "correct": false,
+                "mesh": 0,
+                "texture": 3,
+                "aabb": {
+                    "min": [-0.5, -0.05, -0.5],
+                    "max": [0.5, 0.05, 0.5]
+                },
+                "translation": baseLoc,
+                "scale": [0.5, 0.05, 0.5]
+            })
         }
         const images = scene.textures.map(uri => this.loadImage(uri));
         const meshes = scene.meshes.map(uri => this.loadJson(uri));

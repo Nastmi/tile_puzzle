@@ -66,6 +66,7 @@ export class Node {
 
 Node.defaults = {
     id: 0,
+    visible: true,
     translation: [0, 1, 0],
     rotation: [0, 0, 0],
     scale: [1, 1, 1],

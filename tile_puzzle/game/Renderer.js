@@ -55,19 +55,22 @@ export class Renderer {
 
         scene.traverse(
             node => {
-                matrixPlayerStack.push(mat4.clone(matrixPlayer));
-                mat4.mul(matrixPlayer, matrixPlayer, node.transform);
-                if (node.gl.vao) {
-                    gl.bindVertexArray(node.gl.vao);
-                    gl.uniformMatrix4fv(program.uniforms.uViewModel, false, matrixPlayer);
-                    gl.activeTexture(gl.TEXTURE0);
-                    gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
-                    gl.uniform1i(program.uniforms.uTexture, 0);
-                    gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
+                if(node.visible){
+                    matrixPlayerStack.push(mat4.clone(matrixPlayer));
+                    mat4.mul(matrixPlayer, matrixPlayer, node.transform);
+                    if (node.gl.vao) {
+                        gl.bindVertexArray(node.gl.vao);
+                        gl.uniformMatrix4fv(program.uniforms.uViewModel, false, matrixPlayer);
+                        gl.activeTexture(gl.TEXTURE0);
+                        gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
+                        gl.uniform1i(program.uniforms.uTexture, 0);
+                        gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
+                    }
                 }
             },
             node => {
-                matrixPlayer = matrixPlayerStack.pop();
+                if(node.visible)
+                    matrixPlayer = matrixPlayerStack.pop();
             }
         );
 
