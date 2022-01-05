@@ -79,7 +79,7 @@ export class TileHandler{
             let toPlace = this.picked[this.selected];
             toPlace.translation = node.translation.slice();
             if(!toPlace.on_grid)
-                toPlace.translation[1] += 0.07;
+                toPlace.translation[1] += 0.05;
             toPlace.rotation = node.rotation.slice();
             this.removeTile(toPlace);
             toPlace.updateTransform();
@@ -110,7 +110,7 @@ export class TileHandler{
         this.scene.removeNode(node);
         if(node.on_grid){
             node.on_grid = false;
-            node.translation[1] -= 0.07;
+            node.translation[1] -= 0.05;
         }
         if(node.grid != null){
             node.grid.filled = false;

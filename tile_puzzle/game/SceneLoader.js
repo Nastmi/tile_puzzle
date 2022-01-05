@@ -42,11 +42,11 @@ export class SceneLoader {
                 "mesh": 0,
                 "texture": 3,
                 "aabb": {
-                    "min": [-0.5, -0.05, -0.5],
-                    "max": [0.5, 0.05, 0.5]
+                    "min": [-0.5, -0.03, -0.5],
+                    "max": [0.5, 0.03, 0.5]
                 },
                 "translation": baseLoc,
-                "scale": [0.5, 0.05, 0.5]
+                "scale": [0.5, 0.03, 0.5]
             })
         }
         const images = scene.textures.map(uri => this.loadImage(uri));

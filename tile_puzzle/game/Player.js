@@ -70,7 +70,7 @@ export class Player extends Node {
         let z = this.transform[10];
         let vec = new vec3.fromValues(x, y, z);
         //Scale the vector by the distance.
-        vec3.scale(vec, vec, -5);
+        vec3.scale(vec, vec, -4);
         //Add the players location to the vector, to get the new farPoint.
         vec3.add(vec, vec, this.translation)
         this.farPoint = vec;
