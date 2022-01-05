@@ -54,15 +54,13 @@ class App extends Application {
 
         this.player.aspect = this.aspect;
         this.player.updateProjection();
-        //this.scene.addNode(this.player.farPoint);
 
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
-        //this.scene.addNode(this.camera.farPoint);
 
         this.renderer.prepare(this.scene);
         //Create a handler for tiles
-        this.tileHandler = new TileHandler(this.scene, this.player, this.camera);
+        this.tileHandler = new TileHandler(this.scene, this.player); //, this.camera
     }
 
     enableCamera() {
@@ -85,8 +83,13 @@ class App extends Application {
         const t = this.time = Date.now();
         const dt = (this.time - this.startTime) * 0.001;
         this.startTime = this.time;
+        let arr;
         if (this.player) {
-            this.player.update(dt);
+            arr = this.player.update(dt);
+        }
+
+        if(this.camera) {
+            this.camera.update(this.player.translation[0], 10, this.player.translation[2]);
         }
 
         if (this.physics) {

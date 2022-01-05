@@ -16,7 +16,7 @@
 
     {
       "type": "camera",
-      "translation": [0, 20, 0],
+      "translation": [0, 10, 0],
       "rotation": [4.71238898038, 0, 0],
       "aspect": 1,
       "fov": 1.5,

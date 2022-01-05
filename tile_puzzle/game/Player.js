@@ -75,6 +75,7 @@ export class Player extends Node {
         vec3.add(vec, vec, this.translation)
         this.farPoint = vec;
         this.farPoint;
+        return [x, y, z];
     }
 
     getFarPoint(){
@@ -122,7 +123,7 @@ Player.defaults = {
     far              : 100,
     velocity         : [0, 0, 0],
     mouseSensitivity : 0.002,
-    maxSpeed         : 3,
+    maxSpeed         : 4,
     friction         : 0.2,
     acceleration     : 20
 };
