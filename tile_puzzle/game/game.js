@@ -11,6 +11,7 @@ import { SceneBuilder } from './SceneBuilder.js';
 import { TileHandler } from './TileHandler.js';
 import { InputHandler } from './InputHandler.js';
 import { Gui } from "./gui.js";
+import { Light } from "./Light.js";
 
 class App extends Application {
 
@@ -20,6 +21,9 @@ class App extends Application {
         this.time = Date.now();
         this.startTime = this.time;
         this.aspect = 1;
+
+        this.light = new Light();
+
         this.pointerlockchangeHandler = this.pointerlockchangeHandler.bind(this);
         document.addEventListener('pointerlockchange', this.pointerlockchangeHandler);
         this.load('game/scene.json');
@@ -100,7 +104,7 @@ class App extends Application {
 
     render() {
         if (this.scene) {
-            this.renderer.render(this.scene, this.player, this.camera);
+            this.renderer.render(this.scene, this.player, this.camera, this.light);
         }
     }
 

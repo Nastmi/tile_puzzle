@@ -1,4 +1,4 @@
-import { mat4 } from '../lib/gl-matrix-module.js';
+import { mat4,vec3 } from '../lib/gl-matrix-module.js';
 
 import { WebGL } from '../common/engine/WebGL.js';
 
@@ -9,7 +9,8 @@ export class Renderer {
     constructor(gl) {
         this.gl = gl;
 
-        gl.clearColor(1, 1, 1, 1);
+        gl.clearColor(0.75, 0.85, 0.8, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
@@ -26,7 +27,7 @@ export class Renderer {
         scene.nodes.forEach(node => {
             node.gl = {};
             if (node.mesh) {
-                Object.assign(node.gl, this.createModel(node.mesh, node.type == "tile"));
+                Object.assign(node.gl, this.createModel(node.mesh, node.type === "tile"));
             }
             if (node.image) {
                 node.gl.texture = this.createTexture(node.image);
@@ -34,8 +35,8 @@ export class Renderer {
         });
     }
 
-    render(scene, player, camera) {
-        const gl = this.gl;
+    render(scene, player, camera, light) {
+        const gl = this.gl
 
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.disable(gl.SCISSOR_TEST);
@@ -52,6 +53,21 @@ export class Renderer {
         mat4.invert(viewMatrix, viewMatrix);
         mat4.copy(matrixPlayer, viewMatrix);
         gl.uniformMatrix4fv(program.uniforms.uProjection, false, player.projection);
+
+
+        let color = vec3.clone(light.ambientColor);
+        vec3.scale(color, color, 1.0 / 255.0);
+        gl.uniform3fv(program.uniforms.uAmbientColor, color);
+        color = vec3.clone(light.diffuseColor);
+        vec3.scale(color, color, 1.0 / 255.0);
+        gl.uniform3fv(program.uniforms.uDiffuseColor, color);
+        color = vec3.clone(light.specularColor);
+        vec3.scale(color, color, 1.0 / 255.0);
+        gl.uniform3fv(program.uniforms.uSpecularColor, color);
+        gl.uniform1f(program.uniforms.uShininess, light.shininess);
+        gl.uniform3fv(program.uniforms.uLightPosition, light.position);
+        gl.uniform3fv(program.uniforms.uLightAttenuation, light.attenuatuion);
+
 
         scene.traverse(
             node => {
@@ -94,6 +110,7 @@ export class Renderer {
         mat4.invert(viewMatrix2, viewMatrix2);
         mat4.copy(matrixCamera, viewMatrix2);
         gl.uniformMatrix4fv(program.uniforms.uProjection, false, camera.projection);
+
 
         scene.traverse(
             node => {
