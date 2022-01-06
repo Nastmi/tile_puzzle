@@ -545,7 +545,8 @@
     "../common/images/placeholder.png",
     "../common/images/placeholderg.png",
     "../common/images/grid.png",
-    "../common/images/red.png"
+    "../common/images/arrow.jpg"
+
   ],
   "meshes": [
     "../common/models/cube.json",

@@ -1,0 +1,84 @@
+html{
+    height:100%
+}
+body{
+    height:100%;
+    background: url(./images/labyrinth.png) center center no-repeat;
+    background-size:cover;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:sans-serif;
+    margin:0;
+    overflow:hidden
+}
+
+
+#brand{
+    text-align:center;
+    cursor:pointer;
+}
+
+#logo img{
+    display:block;
+    width:25vw;
+    max-width:700px;
+    height:auto;
+    transition:0.2s;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    -moz-box-shadow: 0 0 5px black;
+    -webkit-box-shadow: 0 0 5px black;
+    box-shadow: 0 0 5px black;
+
+
+
+}
+#brand a{
+    display:block;
+    font-family: 'Passion One';
+    font-size:3em;
+    color:white;
+    font-weight:800;
+    text-decoration:none;
+    background:rgba(0,0,40,0);
+    padding:20px 15px;
+    transition:0.4s;
+
+}
+
+
+#brand:hover a{
+    color:rgba(200,80,50,1);
+    text-shadow:2px 5px 0 rgba(0,0,0.2,0.6)
+}
+
+#logo p{
+    color:white;
+    text-align: center;
+    font-size:4em;
+    margin: 2vw;
+    font-weight:800;
+    font-family: 'Passion One';
+
+
+}
+
+.btn{
+    color:#ddd;
+    border:2px solid;
+    border-radius:3px;
+    text-decoration:none;
+    display:inline-block;
+    padding:10px 15px;
+    font-family:sans-serif;
+    font-weight:600;
+    margin-top:80vh;
+    background:rgba(0,0,0,0.2);
+    box-shadow:0 0 0px 3px rgba(0,0,0,0.2);
+    opacity:0.8;
+    position:absolute;
+    bottom:30px;
+    right:30px
+}.btn:hover{color:red;}

@@ -15,6 +15,7 @@ export class Renderer {
         gl.enable(gl.CULL_FACE);
 
         this.programs = WebGL.buildPrograms(gl, shaders);
+        this.programs1 = WebGL.buildPrograms(gl, shaders);
 
         this.defaultTexture = WebGL.createTexture(gl, {
             width  : 1,
@@ -44,6 +45,7 @@ export class Renderer {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         const program = this.programs.simple;
+        const program1 = this.programs1.simple;
         gl.useProgram(program.program);
 
         let matrixPlayer = mat4.create();
@@ -101,7 +103,7 @@ export class Renderer {
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        gl.useProgram(program.program);
+        gl.useProgram(program1.program);
 
         let matrixCamera = mat4.create();
         let matrixCameraStack = [];
@@ -109,7 +111,20 @@ export class Renderer {
         const viewMatrix2 = camera.getGlobalTransform();
         mat4.invert(viewMatrix2, viewMatrix2);
         mat4.copy(matrixCamera, viewMatrix2);
-        gl.uniformMatrix4fv(program.uniforms.uProjection, false, camera.projection);
+        gl.uniformMatrix4fv(program1.uniforms.uProjection, false, camera.projection);
+
+        let color1 = vec3.clone(light.ambientColor);
+        vec3.scale(color1, color1, 5.0 / 255.0);
+        gl.uniform3fv(program1.uniforms.uAmbientColor, color1);
+        color1 = vec3.clone(light.diffuseColor);
+        vec3.scale(color1, color1, 1.0 / 255.0);
+        gl.uniform3fv(program1.uniforms.uDiffuseColor, color1);
+        color1 = vec3.clone(light.specularColor);
+        vec3.scale(color1, color1, 1.0 / 255.0);
+        gl.uniform3fv(program1.uniforms.uSpecularColor, color1);
+        gl.uniform1f(program1.uniforms.uShininess, light.shininess);
+        gl.uniform3fv(program1.uniforms.uLightPosition, light.position);
+        gl.uniform3fv(program1.uniforms.uLightAttenuation, light.attenuatuion);
 
 
         scene.traverse(
@@ -118,10 +133,10 @@ export class Renderer {
                 mat4.mul(matrixCamera, matrixCamera, node.transform);
                 if (node.gl.vao) {
                     gl.bindVertexArray(node.gl.vao);
-                    gl.uniformMatrix4fv(program.uniforms.uViewModel, false, matrixCamera);
+                    gl.uniformMatrix4fv(program1.uniforms.uViewModel, false, matrixCamera);
                     gl.activeTexture(gl.TEXTURE0);
                     gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
-                    gl.uniform1i(program.uniforms.uTexture, 0);
+                    gl.uniform1i(program1.uniforms.uTexture, 0);
                     gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
                 }
             },

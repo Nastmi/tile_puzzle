@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>17 - Game example - ES6/WebGL 2.0 Examples</title>
+    <title>Tile puzzle Game</title>
 
-    <link rel="stylesheet" type="text/css" href="../../common/style.css">
+    <link rel="stylesheet" type="text/css" href="./common/main.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
-    <script type="text/javascript" src="./lib/gl-matrix-min.js"></script>
-    <script type="text/javascript" src="./lib/dat.gui.min.js"></script>
-    <script type="module" src="./game/game.js"></script>
+    <script>
+        function MyFunction(){
+            swal("Tile puzzle game", "Ziga Crv\n Natan Semrl\n Luka Gulic")
+        }
+    </script>
+
 </head>
 <body>
-    <div class="fullscreen">
-        <canvas></canvas>
-    </div>
-    <div class = "gui">
-        <div class = "numk">Use the number keys to switch between tiles!</div>
-        <div class = "tiles"></div>
-        <div class = "tooltip">Search the maze for tiles and bring them to the center!</div>
-    </div>
+
+<div id="logo">
+    <p>TILE PUZZLE GAME</p>
+    <img draggable="false" src="./common/images/zmaj.png">
+
+    <div id="brand"><a href="./html/game.html">PRESS START</a></div>
+</div>
+
+<footer>
+    <p align="center"> <a href="#" onclick="MyFunction()" class="btn";>credits</a>
+    </p>
+</footer>
+
 </body>
 </html>

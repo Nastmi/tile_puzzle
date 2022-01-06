@@ -28,7 +28,7 @@ export class SceneBuilder {
                       "max": [1,-99,6]
                     },
                     "translation": [0, 0, 0],
-                    "scale": [0.5,1,0.5]
+                    "scale": [0.7,1,0.7]
                 }
                 playerModel = this.createNode(playerModel);
                 return new Player(spec, playerModel);
