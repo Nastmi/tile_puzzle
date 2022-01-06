@@ -17,8 +17,8 @@ export class Camera extends Node {
         mat4.perspective(this.projection, this.fov, this.aspect, this.near, this.far);
     }
 
-    update(x, y, z) {
-        this.translation = [x,y,z];
+    update(x, z) {
+        this.translation = [x, this.translation[1], z];
     }
 
     mousemoveHandler(e) {

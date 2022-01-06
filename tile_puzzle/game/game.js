@@ -86,7 +86,7 @@ class App extends Application {
         }
 
         if(this.camera) {
-            this.camera.update(this.player.translation[0], 15, this.player.translation[2]);
+            this.camera.update(this.player.translation[0], this.player.translation[2]);
         }
 
         if (this.physics) {

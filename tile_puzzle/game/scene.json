@@ -16,7 +16,7 @@
 
     {
       "type": "camera",
-      "translation": [0, 15, 0],
+      "translation": [0, 10, 0],
       "rotation": [4.71238898038, 0, 0],
       "aspect": 1,
       "fov": 1.5,
@@ -31,7 +31,7 @@
         "max": [0, -100, 0]
       },
       "texture": 1,
-      "translation": [0, -1, 0],
+      "translation": [0, 3, 0],
       "scale": [60,0,60]
     },
     {

@@ -93,8 +93,8 @@ export class Renderer {
         );
 
         // test draw mini map
-        const miniMapWidth = 400;
-        const miniMapHeight = 400;
+        const miniMapWidth = 300;
+        const miniMapHeight = 300;
         const miniMapX = gl.canvas.width - miniMapWidth;
         const miniMapY = gl.canvas.height - miniMapHeight;
         gl.viewport(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
