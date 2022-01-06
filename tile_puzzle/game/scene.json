@@ -544,13 +544,14 @@
     "../common/images/green.png",
     "../common/images/placeholder.png",
     "../common/images/placeholderg.png",
-    "../common/images/grid.png"
+    "../common/images/grid.png",
+    "../common/images/red.png"
   ],
   "meshes": [
     "../common/models/cube.json",
     "../common/models/pyramid.json"
   ],
-  "num":1,
+  "num":9,
   "pLocations": [
     [2, -0.98, 5],
     [3, -0.98, -2],

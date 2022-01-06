@@ -19,7 +19,19 @@ export class SceneBuilder {
                 return new Camera(spec);
             }
             case 'player': {
-                return new Player(spec);
+                let playerModel = {
+                    "type": "model",
+                    "mesh": 0,
+                    "texture": 6,
+                    "aabb": {
+                      "min": [-1,-100,-6],
+                      "max": [1,-99,6]
+                    },
+                    "translation": [0, 0, 0],
+                    "scale": [0.5,1,0.5]
+                }
+                playerModel = this.createNode(playerModel);
+                return new Player(spec, playerModel);
             }
             case "pointer":
             case "grid_piece":

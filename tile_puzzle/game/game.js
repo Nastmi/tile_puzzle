@@ -54,6 +54,7 @@ class App extends Application {
         this.player.updateProjection();
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
+        this.scene.addNode(this.player.playerModel);
         this.renderer.prepare(this.scene);
         //Create a handler for tiles
         this.tileHandler = new TileHandler(this.scene, this.player, scene.num);

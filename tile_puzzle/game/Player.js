@@ -6,7 +6,7 @@ import { Camera } from './Camera.js';
 
 export class Player extends Node {
 
-    constructor(options) {
+    constructor(options, playerModel) {
         super(options);
         this.disabled = true; //remove in camera
         Utils.init(this, this.constructor.defaults, options);
@@ -15,6 +15,7 @@ export class Player extends Node {
         this.mousemoveHandler = this.mousemoveHandler.bind(this);
         //farPoint defines how far a tile can be for it to be interactable. It is always placed the same distance away from the player.
         this.farPoint = this.translation.slice();
+        this.playerModel = playerModel;
     }
 
     updateProjection() {
@@ -63,7 +64,6 @@ export class Player extends Node {
         if (len > c.maxSpeed) {
             vec3.scale(c.velocity, c.velocity, c.maxSpeed / len);
         }
-
         //Update the farPoint. First get forward vector, to find out where the player is facing.
         let x = this.transform[8];
         let y = this.transform[9];
@@ -75,6 +75,12 @@ export class Player extends Node {
         vec3.add(vec, vec, this.translation)
         this.farPoint = vec;
         this.farPoint;
+
+        //Move player model
+        this.playerModel.translation = this.translation.slice();
+        this.playerModel.rotation = this.rotation.slice();
+        this.playerModel.rotation[0] = 0;
+        this.playerModel.updateTransform();
         return [x, y, z];
     }
 
