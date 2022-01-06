@@ -27,7 +27,7 @@ export class Renderer {
         scene.nodes.forEach(node => {
             node.gl = {};
             if (node.mesh) {
-                Object.assign(node.gl, this.createModel(node.mesh, node.type === "tile"));
+                Object.assign(node.gl, this.createModel(node.mesh, (node.type === "tile" || node.type == "grid_piece")));
             }
             if (node.image) {
                 node.gl.texture = this.createTexture(node.image);

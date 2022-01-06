@@ -43,7 +43,6 @@ class App extends Application {
                 this.player = node;
             }
         });
-
         //camera for minimap
         this.camera = null;
         this.scene.traverse(node => {
@@ -51,16 +50,13 @@ class App extends Application {
                 this.camera = node;
             }
         });
-
         this.player.aspect = this.aspect;
         this.player.updateProjection();
-
         this.camera.aspect = this.aspect;
         this.camera.updateProjection();
-
         this.renderer.prepare(this.scene);
         //Create a handler for tiles
-        this.tileHandler = new TileHandler(this.scene, this.player); //, this.camera
+        this.tileHandler = new TileHandler(this.scene, this.player, scene.num);
     }
 
     enableCamera() {
@@ -100,8 +96,8 @@ class App extends Application {
             this.tileHandler.update(dt);
         }
 
-        if(this.gui){
-            this.gui.update();
+        if(this.scene) {
+
         }
     }
 

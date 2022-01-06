@@ -27,12 +27,11 @@ export class SceneLoader {
             scene.locations.push(scene.pLocations[randIdx]);
             //Remove location from possible choices
             scene.pLocations.splice(randIdx, 1);
-
             //Add a grid piece for this node
             let baseLoc = scene.grid_location.slice();
-            let x = Math.floor(i/2);
-            let y = i%2;
-            baseLoc[0] -= x*1;
+            let x = i%3;
+            let y = Math.floor(i/3);
+            baseLoc[0] += x*1;
             baseLoc[2] += y*1;
             scene.nodes.push({
                 "id": i,
@@ -40,13 +39,14 @@ export class SceneLoader {
                 "filled": false,
                 "correct": false,
                 "mesh": 0,
-                "texture": 3,
+                "texture": 5,
                 "aabb": {
                     "min": [-0.5, -0.03, -0.5],
                     "max": [0.5, 0.03, 0.5]
                 },
                 "translation": baseLoc,
-                "scale": [0.5, 0.03, 0.5]
+                "scale": [0.5, 0.03, 0.5],
+                "rotation": [0, 1.57, 0]
             })
         }
         const images = scene.textures.map(uri => this.loadImage(uri));

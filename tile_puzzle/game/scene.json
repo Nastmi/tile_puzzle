@@ -543,21 +543,25 @@
     "../common/images/grass.png",
     "../common/images/green.png",
     "../common/images/placeholder.png",
-    "../common/images/placeholderg.png"
+    "../common/images/placeholderg.png",
+    "../common/images/grid.png"
   ],
   "meshes": [
     "../common/models/cube.json",
     "../common/models/pyramid.json"
   ],
-  "num":4,
+  "num":1,
   "pLocations": [
     [2, -0.98, 5],
     [3, -0.98, -2],
     [4, -0.98, -1],
     [-1, -0.98, 7],
     [-3, -0.98, 2],
-    [-4, -0.98, 1]
+    [-4, -0.98, 1],
+    [-4, -0.98, 2],
+    [-2, -0.98, 1],
+    [1, -0.98, 1]
   ],
   "locations": [],
-  "grid_location": [0, -0.95, -5]
+  "grid_location": [-0.5, -0.95, -7]
 }

@@ -1,4 +1,6 @@
-body, html {
+@import url('https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap');
+
+body, html{
     margin: 0;
     padding: 0;
 }
@@ -7,24 +9,24 @@ body, html {
     font-family: sans-serif;
 }
 
-.fullscreen {
+.fullscreen{
     width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
 
-.fullscreen > canvas {
+.fullscreen > canvas{
     width: 100%;
     height: 100%;
 }
 
-.overlay {
+.overlay{
     position: fixed;
     left: 20px;
     top: 20px;
 }
 
-a.back {
+a.back{
     display: block;
     padding: 5px 10px;
     background: #fff;
@@ -34,7 +36,7 @@ a.back {
     color: #000;
 }
 
-a.back:hover {
+a.back:hover{
     background: #ddd;
 }
 
@@ -42,7 +44,32 @@ a.back:hover {
     position: fixed;
 }
 
-.gui > * {
+.gui > *{
     position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: 'Luxurious Roman', cursive;
+    color: #FFF;
+}
+
+.tiles{
+    left: 0.5%;
+    top: 48%;
+    width: 9%;
+    height: 50%;
+}
+
+.numk{
+    left: 0.5%;
+    top: 40%;
+    width: 9%;
+    height: 7%;
+    font-size: 1.8vh;
+}
+
+.tooltip{
+    font-size: 3vh;
+    right: 5%;
+    top:90%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 

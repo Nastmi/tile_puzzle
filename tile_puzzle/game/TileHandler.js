@@ -5,11 +5,12 @@ import { lineBoxIntersection } from './PhysicsFunctions.js';
 
 export class TileHandler{
 
-    constructor(scene, camera) {
+    constructor(scene, camera, num) {
         this.scene = scene;
         this.camera = camera;
         this.picked = [];
         this.selected = 0;
+        this.num = num;
         this.scene.traverse(node => {
             if(node.type == "pointer")
                 this.pointer = node;
@@ -20,41 +21,55 @@ export class TileHandler{
         let pVis = false;
         this.scene.traverse(node => {
             //if node is tile, not in correct postition and E is pressed, add it our "inventory".
-            if (node.type == "tile" && !node.correct) {
+            if (node.type == "tile") {
                 if(this.checkRayCollision(node)){
-                    //If looking at tile, make pointer visible.
-                    this.pointer.visible = true;
-                    this.pointer.translation = node.translation.slice();
-                    this.pointer.translation[1] += 0.5;
-                    pVis = true;
-                    if(globalThis.onceKeys['KeyE']){
-                        this.addTile(node);
-                        globalThis.onceKeys['KeyE'] = false;
-                        globalThis.gui.updatePicked(this.picked, this.selected);
-                        //If tile picked up, make pointer invisible.
-                        this.pointer.visible = false;
-                        return;
-                    }
-                }
-            }
-            //if node is grid piece, doesn't have the correct tile on it and q is pressed, attempt to add the currently selected node to it.
-            else if(node.type == "grid_piece" && !node.correct){
-                if(this.checkRayCollision(node)){
-                    //if looking at grid, make pointer visible (unless it already has a tile, then you can interact with it).
-                    if(!node.filled){
+                    if(!node.correct){
+                        //If looking at tile, make pointer visible.
                         this.pointer.visible = true;
                         this.pointer.translation = node.translation.slice();
                         this.pointer.translation[1] += 0.5;
                         pVis = true;
+                        globalThis.gui.updateTooltip(1);
+                        if(globalThis.onceKeys['KeyE']){
+                            this.addTile(node);
+                            globalThis.onceKeys['KeyE'] = false;
+                            globalThis.gui.updatePicked(this.picked, this.selected);
+                            //If tile picked up, make pointer invisible.
+                            this.pointer.visible = false;
+                            globalThis.gui.updateTooltip(0);
+                            return;
+                        }
                     }
-                    if(globalThis.onceKeys['KeyQ']){
-                        this.place(node);
-                        globalThis.onceKeys['KeyQ'] = false;
-                        globalThis.gui.updatePicked(this.picked, this.selected);
-                        //if node was placed, make pointer invisible.
-                        this.pointer.visible = false;
-                        return;
+                    else
+                        globalThis.gui.updateTooltip(4);
+                }
+            }
+            //if node is grid piece, doesn't have the correct tile on it and q is pressed, attempt to add the currently selected node to it.
+            else if(node.type == "grid_piece"){
+                if(this.checkRayCollision(node)){
+                    if(!node.correct){
+                        //if looking at grid, make pointer visible (unless it already has a tile, then you can interact with it).
+                        if(this.picked.length <= 0)
+                            globalThis.gui.updateTooltip(3);
+                        if(!node.filled && this.picked.length > 0){
+                            this.pointer.visible = true;
+                            this.pointer.translation = node.translation.slice();
+                            this.pointer.translation[1] += 0.5;
+                            pVis = true;
+                            globalThis.gui.updateTooltip(2);
+                        }
+                        if(globalThis.onceKeys['KeyQ']){
+                            this.place(node);
+                            globalThis.onceKeys['KeyQ'] = false;
+                            globalThis.gui.updatePicked(this.picked, this.selected);
+                            //if node was placed, make pointer invisible.
+                            this.pointer.visible = false;
+                            globalThis.gui.updateTooltip(0);
+                            return;
+                        }
                     }
+                    else
+                        globalThis.gui.updateTooltip(4);
                 }
             }
         });
@@ -70,6 +85,9 @@ export class TileHandler{
                 globalThis.gui.updatePicked(this.picked, this.selected);
             }
         }
+
+        //Check if all tiles are correct.
+        this.checkWin();
     }
 
     //place the node on a grid, if player is looking at it, and noode exists
@@ -90,6 +108,16 @@ export class TileHandler{
                 toPlace.correct = true;
             }
         }
+    }
+
+    checkWin(){
+        let cor = 0;
+        this.scene.traverse(node => {
+            if(node.type == "tile" && node.correct)
+                cor++;
+            if(cor == this.num)
+                window.location.href = "../html/win.html";
+        });
     }
 
     //check if player is looking at a node
@@ -122,8 +150,10 @@ export class TileHandler{
     removeTile(node){
         this.scene.addNode(this.picked[this.selected]);
         this.picked.splice(this.selected, 1);
-        if(this.selected >= this.picked.length)
-                this.selected = Math.max(this.selected--, 0);
+        if(this.selected >= this.picked.length){
+            this.selected--;
+            this.selected = Math.max(this.selected, 0);
+        }
     }
 
     getPicked(){
