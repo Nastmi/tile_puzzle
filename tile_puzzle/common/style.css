@@ -92,3 +92,23 @@ a.back:hover{
     background-color: rgba(0, 0, 0, 0);
     text-align: center;
 }
+
+.swal2-popup {
+    font-family: inherit;
+}
+  
+.icon-right {
+    margin-right: 40px !important;
+}
+  
+.swal2-title{
+    bottom:100%;
+    right:15%;
+    font-size: 2vmax;
+}
+
+.swal2-html-container{
+    position: relative;
+    bottom: 20%;
+
+}

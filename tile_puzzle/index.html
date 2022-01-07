@@ -3,20 +3,26 @@
 <head>
     <title>Tile puzzle Game</title>
 
-    <link rel="stylesheet" type="text/css" href="./common/main.css">
     <script src="./lib/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./lib/sweetalert2/dist/sweetalert2.css">
+    <link rel="stylesheet" type="text/css" href="./common/main.css">
     <script>
         function MyFunction(){
             Swal.fire({
-                title: "Tile puzzle game!",
-                text: "Ziga Crv, Luka Gulic, Natan Semrl",
+                title: "Tile puzzle\n game!",
+                html: `Game by Ziga Crv, Luka Gulic, Natan Semrl,</br>
+                for the class Computer Graphics 2021/22.</br>
+                Mentored by dr. Iztok Lebar Bajec and Ziga Lesar.</br>
+                Textures from <a href="https://opengameart.org/">Open game art.</a></br>
+                Dragon image by rawpixel.com on <a href="https://www.freepik.com/free-vector/hand-drawn-dragon_4089180.htm#query=dragon&position=9&from_view=search">freepik.</a></br>
+                Sounds from <a href="https://www.fesliyanstudios.com/royalty-free-sound-effects-download/footsteps-on-grass-284">Fesliyan Studios</a>`,
                 customClass: {
                     icon: 'icon-right'
                 },
                 iconHtml:"<img src='../common/images/cropped.png' width='168px' height='168px'>",
                 background: "#f5f1d9",
                 allowOutsideClick: false,
+                confirmButtonText: "Close",
                 backdrop: `
             rgba(0,0,0,0.7)
             `

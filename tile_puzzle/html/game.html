@@ -14,32 +14,6 @@
 </head>
 <body>
 <script>
-    $("document").ready( function () {
-        Swal.fire({
-            title: "Tile puzzle game!\nInstructions",
-            text: "urn All the Pieces Picture-Side-Up." +
-                "Sort Pieces Into Groups.\n" +
-                "Assemble the Border.!" +
-                "Assemble by Sorting Groups, Colors, and Patterns.\n" +
-                "Pay Attention to Piece Shapes.\n" +
-                "Spread It Out.",
-            confirmButtonText: "Play",
-            cancelButtonText: "Go to menu",
-            customClass: {
-                icon: 'icon-right'
-            },
-            iconHtml:"<img src='../common/images/cropped.png' width='168px' height='168px'>",
-            background: "#f5f1d9",
-            allowOutsideClick: false,
-            showCancelButton: true,
-            backdrop: `
-                rgba(0,0,0,0.7)
-            `
-        }).then(function(result){
-            if(!result.value)
-                window.location.href = "../index.html";
-        })
-    });
 </script>
 
 <div class="fullscreen">
@@ -52,6 +26,7 @@
     <div class = "numk">Use the number keys to switch between tiles!</div>
     <div class = "tiles"></div>
     <div class = "tooltip">Search the maze for tiles and bring them to the center!</div>
+    <img src = "../common/images/cross.png" style="width: 5%; height: 7%; top: 45.5%; left: 47.5%; background: none;">
 </div>
 </body>
 </html>

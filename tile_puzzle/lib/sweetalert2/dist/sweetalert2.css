@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap');
-
 .swal2-popup.swal2-toast {
   box-sizing: border-box;
   grid-column: 1/4 !important;
@@ -1399,18 +1397,4 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-end, body.swal2-toast-shown
   right: 0;
   bottom: 0;
   left: auto;
-}
-
-.swal2-popup {
-  font-family: inherit;
-}
-
-.icon-right {
-  margin-right: 40px;
-}
-
-.swal2-title{
-  bottom:13vh;
-  right:10vh;
-  font-size: 5vh;
 }

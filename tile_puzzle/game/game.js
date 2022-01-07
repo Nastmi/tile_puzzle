@@ -15,6 +15,7 @@ import { Light } from "./Light.js";
 
 class App extends Application {
     start() {
+        this.canvas = document.querySelector('canvas');
         const gl = this.gl;
         this.renderer = new Renderer(gl);
         this.time = Date.now();
@@ -73,6 +74,11 @@ class App extends Application {
             this.player.enable();
         } else {
             this.player.disable();
+            document.addEventListener("mousedown", () => {
+                this.canvas.requestPointerLock = this.canvas.requestPointerLock ||
+                this.canvas.mozRequestPointerLock;
+                this.canvas.requestPointerLock();
+            })
         }
     }
 
@@ -147,6 +153,29 @@ class App extends Application {
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.querySelector('canvas');
     const app = new App(canvas);
-    const gui = new GUI();
-    gui.add(app, 'enableCamera');
+    Swal.fire({
+        title: "Tile puzzle game!\nInstructions",
+        html: `You are placed in a dark maze, and you must assemble together a picture out of tiles. 
+        Explore the maze to find them and pick them up by pressing <b>E</b> while looking at them. Bring them to the center and assemble
+            them on the grid with <b>Q</b>. Move using <b>WASD</b>. Toggle the minimap using <b>M</b>, but beware!
+            You can only use the minimap for 60 seconds in total!`,
+        confirmButtonText: "Play",
+        cancelButtonText: "Go back to menu",
+        customClass: {
+            icon: 'icon-right'
+        },
+        iconHtml:"<img src='../common/images/cropped.png' width='168px' height='168px'>",
+        background: "#f5f1d9",
+        allowOutsideClick: false,
+        showCancelButton: true,
+        backdrop: `
+            rgba(0,0,0,0.7)
+        `
+    }).then(function(result){
+        if(!result.value)
+            window.location.href = "../index.html";
+            canvas.requestPointerLock = canvas.requestPointerLock ||
+            canvas.mozRequestPointerLock;
+            canvas.requestPointerLock()
+    })
 });
