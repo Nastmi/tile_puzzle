@@ -16,19 +16,13 @@ export class Renderer {
 
         this.programs = WebGL.buildPrograms(gl, shaders);
         this.programs1 = WebGL.buildPrograms(gl, shaders);
-
-        this.defaultTexture = WebGL.createTexture(gl, {
-            width  : 1,
-            height : 1,
-            data   : new Uint8Array([255, 255, 255, 255])
-        });
     }
 
     prepare(scene) {
         scene.nodes.forEach(node => {
             node.gl = {};
             if (node.mesh) {
-                Object.assign(node.gl, this.createModel(node.mesh, (node.type === "tile" || node.type == "grid_piece")));
+                Object.assign(node.gl, this.createModel(node.mesh, (node.type === "tile" || node.type === "grid_piece")));
             }
             if (node.image) {
                 node.gl.texture = this.createTexture(node.image);
@@ -92,58 +86,61 @@ export class Renderer {
             }
         );
 
-        // test draw mini map
-        const miniMapWidth = 300;
-        const miniMapHeight = 300;
-        const miniMapX = gl.canvas.width - miniMapWidth;
-        const miniMapY = gl.canvas.height - miniMapHeight;
-        gl.viewport(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
-        gl.scissor(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
-        gl.enable(gl.SCISSOR_TEST);
+        if(mini){
+            // test draw mini map
+            const miniMapWidth = 300;
+            const miniMapHeight = 300;
+            const miniMapX = gl.canvas.width - miniMapWidth;
+            const miniMapY = gl.canvas.height - miniMapHeight;
+            gl.viewport(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
+            gl.scissor(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
+            gl.enable(gl.SCISSOR_TEST);
 
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        gl.useProgram(program1.program);
+            gl.useProgram(program1.program);
 
-        let matrixCamera = mat4.create();
-        let matrixCameraStack = [];
+            let matrixCamera = mat4.create();
+            let matrixCameraStack = [];
 
-        const viewMatrix2 = camera.getGlobalTransform();
-        mat4.invert(viewMatrix2, viewMatrix2);
-        mat4.copy(matrixCamera, viewMatrix2);
-        gl.uniformMatrix4fv(program1.uniforms.uProjection, false, camera.projection);
+            const viewMatrix2 = camera.getGlobalTransform();
+            mat4.invert(viewMatrix2, viewMatrix2);
+            mat4.copy(matrixCamera, viewMatrix2);
+            gl.uniformMatrix4fv(program1.uniforms.uProjection, false, camera.projection);
 
-        let color1 = vec3.clone(light.ambientColor);
-        vec3.scale(color1, color1, 5.0 / 255.0);
-        gl.uniform3fv(program1.uniforms.uAmbientColor, color1);
-        color1 = vec3.clone(light.diffuseColor);
-        vec3.scale(color1, color1, 1.0 / 255.0);
-        gl.uniform3fv(program1.uniforms.uDiffuseColor, color1);
-        color1 = vec3.clone(light.specularColor);
-        vec3.scale(color1, color1, 1.0 / 255.0);
-        gl.uniform3fv(program1.uniforms.uSpecularColor, color1);
-        gl.uniform1f(program1.uniforms.uShininess, light.shininess);
-        gl.uniform3fv(program1.uniforms.uLightPosition, light.position);
-        gl.uniform3fv(program1.uniforms.uLightAttenuation, light.attenuatuion);
+            let color1 = vec3.clone(light.ambientColor);
+            vec3.scale(color1, color1, 4.0 / 255.0);
+            gl.uniform3fv(program1.uniforms.uAmbientColor, color1);
+            color1 = vec3.clone(light.diffuseColor);
+            vec3.scale(color1, color1, 1.0 / 255.0);
+            gl.uniform3fv(program1.uniforms.uDiffuseColor, color1);
+            color1 = vec3.clone(light.specularColor);
+            vec3.scale(color1, color1, 1.0 / 255.0);
+            gl.uniform3fv(program1.uniforms.uSpecularColor, color1);
+            gl.uniform1f(program1.uniforms.uShininess, light.shininess);
+            gl.uniform3fv(program1.uniforms.uLightPosition, light.position);
+            gl.uniform3fv(program1.uniforms.uLightAttenuation, light.attenuatuion);
 
 
-        scene.traverse(
-            node => {
-                matrixCameraStack.push(mat4.clone(matrixCamera));
-                mat4.mul(matrixCamera, matrixCamera, node.transform);
-                if (node.gl.vao) {
-                    gl.bindVertexArray(node.gl.vao);
-                    gl.uniformMatrix4fv(program1.uniforms.uViewModel, false, matrixCamera);
-                    gl.activeTexture(gl.TEXTURE0);
-                    gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
-                    gl.uniform1i(program1.uniforms.uTexture, 0);
-                    gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
+            scene.traverse(
+                node => {
+                    matrixCameraStack.push(mat4.clone(matrixCamera));
+                    mat4.mul(matrixCamera, matrixCamera, node.transform);
+                    if (node.gl.vao) {
+                        gl.bindVertexArray(node.gl.vao);
+                        gl.uniformMatrix4fv(program1.uniforms.uViewModel, false, matrixCamera);
+                        gl.activeTexture(gl.TEXTURE0);
+                        gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
+                        gl.uniform1i(program1.uniforms.uTexture, 0);
+                        gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
+                    }
+                },
+                () => {
+                    matrixCamera = matrixCameraStack.pop();
                 }
-            },
-            node => {
-                matrixCamera = matrixCameraStack.pop();
-            }
-        );
+            );
+        }
+
     }
 
     createModel(model, topOnly) {
@@ -192,3 +189,13 @@ export class Renderer {
     }
 
 }
+let mini = true;
+document.addEventListener("keypress", e => {
+    let code = e.keyCode || e.which;
+    let pressedChar = String.fromCharCode(code).toLowerCase();
+    switch (pressedChar) {
+        case'm':
+            mini = !mini;
+            break;
+    }
+});

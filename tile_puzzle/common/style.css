@@ -3,6 +3,8 @@
 body, html{
     margin: 0;
     padding: 0;
+    min-width: 600px;
+    min-height: 400px;
 }
 
 * {
@@ -73,3 +75,23 @@ a.back:hover{
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+.timea{
+    left: 0.5%;
+    top:27%;
+    width: 9%;
+    height: 7%;
+    font-size: 1.8vh;
+    background-color: rgba(0, 0, 0, 0);
+    text-align: center;
+
+}
+
+.timem{
+    left: 0.5%;
+    top: 32%;
+    width: 9%;
+    height: 7%;
+    font-size: 1.8vh;
+    background-color: rgba(0, 0, 0, 0);
+    text-align: center;
+}

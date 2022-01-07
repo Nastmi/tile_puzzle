@@ -14,7 +14,6 @@ import { Gui } from "./gui.js";
 import { Light } from "./Light.js";
 
 class App extends Application {
-
     start() {
         const gl = this.gl;
         this.renderer = new Renderer(gl);

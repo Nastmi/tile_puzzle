@@ -19,7 +19,6 @@ export class Camera extends Node {
 
     update(x, z) {
         this.translation = [x, this.translation[1], z];
-        console.log(this.translation);
     }
 
     mousemoveHandler(e) {
