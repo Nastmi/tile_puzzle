@@ -116,7 +116,7 @@ export class TileHandler{
     }
 
     checkWin(){
-        let cor = 9;
+        let cor = 0;
         this.scene.traverse(node => {
             if(node.type == "tile" && node.correct)
                 cor++;
