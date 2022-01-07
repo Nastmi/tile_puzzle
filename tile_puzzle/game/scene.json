@@ -3,7 +3,7 @@
   "nodes": [
     {
       "type": "player",
-      "translation": [0, -0.2, 0],
+      "translation": [0, -0.2, 4],
       "aabb": {
         "min": [-0.2, -1, -0.2],
         "max": [0.2, 1, 0.2]
@@ -16,7 +16,7 @@
 
     {
       "type": "camera",
-      "translation": [0, 10, 0],
+      "translation": [0, 10, 4],
       "rotation": [4.71238898038, 0, 0],
       "aspect": 1,
       "fov": 1.5,
@@ -574,5 +574,5 @@
     [-11, -0.98, -17]
   ],
   "locations": [],
-  "grid_location": [-0.5, -0.95, -7]
+  "grid_location": [-1, -0.95, 0]
 }

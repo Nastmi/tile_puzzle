@@ -8,16 +8,46 @@
     <script type="text/javascript" src="../lib/gl-matrix-min.js"></script>
     <script type="text/javascript" src="../lib/dat.gui.min.js"></script>
     <script src="../lib/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="module" src="../game/game.js"></script>
 
 </head>
 <body>
+<script>
+    $("document").ready( function () {
+        Swal.fire({
+            title: "Tile puzzle game!\nInstructions",
+            text: "urn All the Pieces Picture-Side-Up." +
+                "Sort Pieces Into Groups.\n" +
+                "Assemble the Border.!" +
+                "Assemble by Sorting Groups, Colors, and Patterns.\n" +
+                "Pay Attention to Piece Shapes.\n" +
+                "Spread It Out.",
+            confirmButtonText: "Play",
+            cancelButtonText: "Go to menu",
+            customClass: {
+                icon: 'icon-right'
+            },
+            iconHtml:"<img src='../common/images/cropped.png' width='168px' height='168px'>",
+            background: "#f5f1d9",
+            allowOutsideClick: false,
+            showCancelButton: true,
+            backdrop: `
+                rgba(0,0,0,0.7)
+            `
+        }).then(function(result){
+            if(!result.value)
+                window.location.href = "../index.html";
+        })
+    });
+</script>
+
 <div class="fullscreen">
     <canvas></canvas>
 </div>
 <div class = "gui">
     <div class = "timea"><p id="time1">Time left: 300s</p></div>
-    <div class = "timem"><p id="time2">Minimap time left ( M ): 60s</p></div>
+    <div class = "timem"><p id="time2">Minimap time left: 60s</p></div>
     
     <div class = "numk">Use the number keys to switch between tiles!</div>
     <div class = "tiles"></div>

@@ -93,13 +93,13 @@ export class Renderer {
                 timeLeft = 0;
                 timeM.innerHTML = "time's up : 0s";    
             } else{
-                timeM.innerHTML = "Minimap time left ( M ): " + (Math.ceil((StartTime - Date.now()) / 1000)).toString() + "s";
+                timeM.innerHTML = "Minimap time left: " + (Math.ceil((StartTime - Date.now()) / 1000)).toString() + "s";
             }
             
             // test draw mini map
             console.log("displayed");
-            const miniMapWidth = gl.canvas.height/4;
-            const miniMapHeight = gl.canvas.height/4;
+            const miniMapWidth = gl.canvas.height/2;
+            const miniMapHeight = gl.canvas.height/2;
             const miniMapX = gl.canvas.width - miniMapWidth;
             const miniMapY = gl.canvas.height - miniMapHeight;
             gl.viewport(miniMapX, miniMapY, miniMapWidth, miniMapHeight);

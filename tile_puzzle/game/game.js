@@ -114,7 +114,10 @@ class App extends Application {
             iconHtml:"<img src='../common/images/cropped.png' width='168px' height='168px'>",
             showCancelButton: true,
             background: "#f5f1d9",
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            backdrop: `
+                rgba(0,0,0,0.7)
+            `
         }).then(function(result){
             if(result.value)
                 window.location.href = "../html/game.html";
