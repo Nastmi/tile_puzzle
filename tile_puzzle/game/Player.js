@@ -2,13 +2,12 @@ import { vec3, mat4 } from '../lib/gl-matrix-module.js';
 
 import { Utils } from './Utils.js';
 import { Node } from './Node.js';
-import { Camera } from './Camera.js';
 
 export class Player extends Node {
 
     constructor(options, playerModel) {
         super(options);
-        this.disabled = true; //remove in camera
+        this.disabled = true;
         Utils.init(this, this.constructor.defaults, options);
         this.projection = mat4.create();
         this.updateProjection();

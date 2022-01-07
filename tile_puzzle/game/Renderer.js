@@ -16,6 +16,7 @@ export class Renderer {
 
         this.programs = WebGL.buildPrograms(gl, shaders);
         this.programs1 = WebGL.buildPrograms(gl, shaders);
+
     }
 
     prepare(scene) {
@@ -86,10 +87,19 @@ export class Renderer {
             }
         );
 
-        if(mini){
+        if(isMinimapDisplayed){
+            if((StartTime - Date.now()) <= 0 || timeLeft <= 0){
+                isMinimapDisplayed = !isMinimapDisplayed;
+                timeLeft = 0;
+                timeM.innerHTML = "time's up : 0s";    
+            } else{
+                timeM.innerHTML = "Minimap time left ( M ): " + (Math.ceil((StartTime - Date.now()) / 1000)).toString() + "s";
+            }
+            
             // test draw mini map
-            const miniMapWidth = 300;
-            const miniMapHeight = 300;
+            console.log("displayed");
+            const miniMapWidth = gl.canvas.height/4;
+            const miniMapHeight = gl.canvas.height/4;
             const miniMapX = gl.canvas.width - miniMapWidth;
             const miniMapY = gl.canvas.height - miniMapHeight;
             gl.viewport(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
@@ -186,16 +196,31 @@ export class Renderer {
             min   : gl.NEAREST,
             mag   : gl.NEAREST
         });
-    }
-
+    }    
 }
-let mini = true;
+
+let isMinimapDisplayed = false;
+let timeStarted = false;
+
+let  timeM = document.getElementById("time2");
+
+let StartTime;
+let timeLeft = 60000; // 1min = 60000;
+
 document.addEventListener("keypress", e => {
     let code = e.keyCode || e.which;
     let pressedChar = String.fromCharCode(code).toLowerCase();
     switch (pressedChar) {
         case'm':
-            mini = !mini;
+            if(timeLeft > 0){
+                isMinimapDisplayed = !isMinimapDisplayed;
+                if(!isMinimapDisplayed){
+                    timeLeft = StartTime - Date.now();
+                    console.log(timeLeft);
+                }
+                StartTime = Date.now() + timeLeft;
+            }
             break;
     }
 });
+
