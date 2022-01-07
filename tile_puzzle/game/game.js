@@ -57,6 +57,7 @@ class App extends Application {
         this.renderer.prepare(this.scene);
         //Create a handler for tiles
         this.tileHandler = new TileHandler(this.scene, this.player, scene.num);
+        this.win = false;
     }
 
     enableCamera() {
@@ -94,14 +95,35 @@ class App extends Application {
 
         if(this.tileHandler) {
             this.tileHandler.update(dt);
-        }
-
-        if(this.scene) {
-
+            if(!this.win && this.tileHandler.checkWin()){
+                this.win = true;
+                this.handleWin();
+            }
         }
     }
 
-    render() {
+    handleWin(){
+        Swal.fire({
+            title: "You won!",
+            text: "What do you want to do?",
+            confirmButtonText: "Play again",
+            cancelButtonText: "Go to menu",
+            customClass: {
+                icon: 'icon-right'
+            },
+            iconHtml:"<img src='../common/images/cropped.png' width='168px' height='168px'>",
+            showCancelButton: true,
+            background: "#f5f1d9",
+            allowOutsideClick: false
+        }).then(function(result){
+            if(result.value)
+                window.location.href = "../html/game.html";
+            else
+                window.location.href = "../index.html";
+        })
+    }
+
+    render(){
         if (this.scene) {
             this.renderer.render(this.scene, this.player, this.camera, this.light);
         }

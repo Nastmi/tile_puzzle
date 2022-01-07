@@ -6,7 +6,7 @@ body, html{
 }
 
 * {
-    font-family: sans-serif;
+    font-family: 'Luxurious Roman', cursive;
 }
 
 .fullscreen{
@@ -46,8 +46,7 @@ a.back:hover{
 
 .gui > *{
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.5);
-    font-family: 'Luxurious Roman', cursive;
+    background-color: rgba(0, 0, 0, 0.5);   
     color: #FFF;
 }
 

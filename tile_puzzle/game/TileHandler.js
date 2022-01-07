@@ -19,10 +19,12 @@ export class TileHandler{
 
     update(dt) {
         let pVis = false;
+        let eventO = false;
         this.scene.traverse(node => {
             //if node is tile, not in correct postition and E is pressed, add it our "inventory".
             if (node.type == "tile") {
                 if(this.checkRayCollision(node)){
+                    eventO = true;
                     if(!node.correct){
                         //If looking at tile, make pointer visible.
                         this.pointer.visible = true;
@@ -47,6 +49,7 @@ export class TileHandler{
             //if node is grid piece, doesn't have the correct tile on it and q is pressed, attempt to add the currently selected node to it.
             else if(node.type == "grid_piece"){
                 if(this.checkRayCollision(node)){
+                    eventO = true;
                     if(!node.correct){
                         //if looking at grid, make pointer visible (unless it already has a tile, then you can interact with it).
                         if(this.picked.length <= 0)
@@ -76,7 +79,9 @@ export class TileHandler{
 
         if(!pVis)
             this.pointer.visible = false;
-        this.pointer.updateTransform();
+        if(!eventO)
+            globalThis.gui.updateTooltip(0);
+        this.pointer.updateTransform(0);
 
         //select the node corresppodning to the currently pressed digit
         for(let i = 0; i < this.picked.length; i++){
@@ -111,13 +116,14 @@ export class TileHandler{
     }
 
     checkWin(){
-        let cor = 0;
+        let cor = 9;
         this.scene.traverse(node => {
             if(node.type == "tile" && node.correct)
                 cor++;
-            if(cor == this.num)
-                window.location.href = "../html/win.html";
         });
+        if(cor == this.num){
+            return true;
+        }
     }
 
     //check if player is looking at a node
