@@ -20,6 +20,7 @@ class App extends Application {
         this.time = Date.now();
         this.startTime = this.time;
         this.totalTime = Date.now();
+        this.offset = 0;
         this.aspect = 1;
         this.light = new Light();
         this.pointerlockchangeHandler = this.pointerlockchangeHandler.bind(this);
@@ -72,6 +73,7 @@ class App extends Application {
         if (document.pointerLockElement === this.canvas) {
             this.player.enable();
         } else {
+            this.offset += Date.now() - this.totalTime;
             this.player.disable();
             document.addEventListener("mousedown", () => {
                 this.canvas.requestPointerLock = this.canvas.requestPointerLock ||
@@ -86,11 +88,14 @@ class App extends Application {
         const dt = (this.time - this.startTime) * 0.001;
         this.startTime = this.time;
         if(this.totalTime && document.pointerLockElement === this.canvas && globalThis.gui){
-            let timeToEnd = globalThis.gui.updateGlobalTime(this.totalTime, t);
+            let timeToEnd = globalThis.gui.updateGlobalTime(this.totalTime-this.offset, t);
             if(timeToEnd <= 0){
                 this.totalTime = null;
                 this.handleLoss();
             }
+        }
+        else{
+            this.totalTime = Date.now();
         }
         let arr;
         if (this.player) {
@@ -110,7 +115,7 @@ class App extends Application {
                 this.handleWin();
             }
         }
-        if(this.sound)
+        if(this.sound && document.pointerLockElement === this.canvas)
             this.sound.update();
     }
 
