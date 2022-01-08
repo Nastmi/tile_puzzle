@@ -21,7 +21,7 @@ export class SceneBuilder {
             case 'player': {
                 let playerModel = {
                     "type": "model",
-                    "mesh": 0,
+                    "mesh": 2,
                     "texture": 6,
                     "aabb": {
                       "min": [-1,-100,-6],
