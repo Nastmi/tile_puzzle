@@ -115,6 +115,7 @@ class App extends Application {
     }
 
     handleLoss(){
+        this.sound.lose();
         document.exitPointerLock();
         this.canvas.requestPointerLock = null;
         Swal.fire({
@@ -141,6 +142,7 @@ class App extends Application {
     }
 
     handleWin(){
+        this.sound.win();
         document.exitPointerLock();
         this.canvas.requestPointerLock = null;
         Swal.fire({

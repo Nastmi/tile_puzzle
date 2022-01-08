@@ -7,7 +7,7 @@ export class Gui{
 
     updateGlobalTime(startTime, curTime){
         let timeDiv = this.guiDiv.querySelector("#time1");
-        let totalTime = Math.ceil(180 - (curTime - startTime)/1000);
+        let totalTime = Math.ceil(360 - (curTime - startTime)/1000);
         let min = Math.floor(totalTime / 60);
         let sec = totalTime - min*60;
         if(sec < 10)
