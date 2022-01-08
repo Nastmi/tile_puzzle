@@ -118,7 +118,7 @@ class App extends Application {
         document.exitPointerLock();
         this.canvas.requestPointerLock = null;
         Swal.fire({
-            title: "You lost!",
+            title: "Time is up! You lost!",
             text: "What do you want to do?",
             confirmButtonText: "Try again",
             cancelButtonText: "Go to menu",
