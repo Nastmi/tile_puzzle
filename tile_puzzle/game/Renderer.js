@@ -200,8 +200,6 @@ export class Renderer {
 }
 
 let isMinimapDisplayed = false;
-let timeStarted = false;
-
 let  timeM = document.getElementById("time2");
 
 let StartTime;

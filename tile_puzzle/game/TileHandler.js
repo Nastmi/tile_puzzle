@@ -1,7 +1,8 @@
 //Class for handling "puzzle tiles".
 
-import { vec3, mat4 } from '../lib/gl-matrix-module.js';
-import { lineBoxIntersection } from './PhysicsFunctions.js';
+import {mat4, vec3} from '../lib/gl-matrix-module.js';
+import {lineBoxIntersection} from './PhysicsFunctions.js';
+import {Sound} from "./Sound.js";
 
 export class TileHandler{
 
@@ -12,17 +13,18 @@ export class TileHandler{
         this.selected = 0;
         this.num = num;
         this.scene.traverse(node => {
-            if(node.type == "pointer")
+            if(node.type === "pointer")
                 this.pointer = node;
         });
+        this.sound = new Sound();
     }
 
-    update(dt) {
+    update() {
         let pVis = false;
         let eventO = false;
         this.scene.traverse(node => {
             //if node is tile, not in correct postition and E is pressed, add it our "inventory".
-            if (node.type == "tile") {
+            if (node.type === "tile") {
                 if(this.checkRayCollision(node)){
                     eventO = true;
                     if(!node.correct){
@@ -39,7 +41,6 @@ export class TileHandler{
                             //If tile picked up, make pointer invisible.
                             this.pointer.visible = false;
                             globalThis.gui.updateTooltip(0);
-                            return;
                         }
                     }
                     else
@@ -47,7 +48,7 @@ export class TileHandler{
                 }
             }
             //if node is grid piece, doesn't have the correct tile on it and q is pressed, attempt to add the currently selected node to it.
-            else if(node.type == "grid_piece"){
+            else if(node.type === "grid_piece"){
                 if(this.checkRayCollision(node)){
                     eventO = true;
                     if(!node.correct){
@@ -68,7 +69,6 @@ export class TileHandler{
                             //if node was placed, make pointer invisible.
                             this.pointer.visible = false;
                             globalThis.gui.updateTooltip(0);
-                            return;
                         }
                     }
                     else
@@ -105,21 +105,24 @@ export class TileHandler{
             toPlace.updateTransform();
             toPlace.on_grid = true;
             toPlace.grid = node;
-            if(node.id == toPlace.id){
+            if(node.id === toPlace.id){
                 node.correct =  true;
                 toPlace.correct = true;
+                this.sound.correctTile();
+            }else{
+                this.sound.falseTile();
             }
         }
     }
 
     //Check if all tiles are correct
     checkWin(){
-        let cor = 8;
+        let cor = 0;
         this.scene.traverse(node => {
-            if(node.type == "tile" && node.correct)
+            if(node.type === "tile" && node.correct)
                 cor++;
         });
-        if(cor == this.num){
+        if(cor === this.num){
             return true;
         }
     }
@@ -132,13 +135,13 @@ export class TileHandler{
         const pos = mat4.getTranslation(vec3.create(), tnode);
         const min = vec3.add(vec3.create(), pos, node.aabb.min);
         const max = vec3.add(vec3.create(), pos, node.aabb.max);
-        let hit = lineBoxIntersection(n, f, min, max);
-        return hit;
+        return lineBoxIntersection(n, f, min, max);
     }
 
     //add node to the "inventory". If it was on the grid, lower it's vertical coordinates and remove the grid piece it was on from it's attributes.
     addTile(node) {
         this.picked.push(node);
+        this.sound.pickUpTile();
         this.scene.removeNode(node);
         if(node.on_grid){
             node.on_grid = false;
@@ -151,7 +154,7 @@ export class TileHandler{
     }
 
     //Remove the node from "inventory" and add it back into the scene. Also fix which node is currently selected.
-    removeTile(node){
+    removeTile(){
         this.scene.addNode(this.picked[this.selected]);
         this.picked.splice(this.selected, 1);
         if(this.selected >= this.picked.length){
@@ -163,6 +166,4 @@ export class TileHandler{
     getPicked(){
         return this.picked;
     }
-
-
 }

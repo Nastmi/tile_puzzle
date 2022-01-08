@@ -1,5 +1,3 @@
-import { GUI } from '../lib/dat.gui.module.js';
-
 import { Application } from '../common/engine/Application.js';
 
 import { Renderer } from './Renderer.js';

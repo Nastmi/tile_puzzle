@@ -67,7 +67,7 @@ export class Gui{
             newImg.style.clipPath = "inset(0% 0% 0% 11%)"
             cont.style.boxSizing = "border-box";
 
-            if(i == selected)
+            if(i === selected)
                 cont.style.border = "5px solid #37ff00";
             tileDiv.appendChild(newImg);
             tileDiv.appendChild(cont);

@@ -1,4 +1,4 @@
-import { vec3, mat4 } from '../lib/gl-matrix-module.js';
+import { vec3 } from '../lib/gl-matrix-module.js';
 
 export function aabbIntersection(aabmin, aabmax) {
     return intervalIntersection(aabmin.min[0], aabmin.max[0], aabmax.min[0], aabmax.max[0])
@@ -30,7 +30,6 @@ export function lineBoxIntersection(p1, p2, min, max){
         return false;    
     if (Math.abs(d[2] * c[0] - d[0] * c[2]) > e[2] * ad[0] + e[0] * ad[2])        
         return false;    
-    if (Math.abs(d[0] * c[1] - d[1] * c[0]) > e[0] * ad[1] + e[1] * ad[0])        
-        return false;                
-    return true;
+    return Math.abs(d[0] * c[1] - d[1] * c[0]) <= e[0] * ad[1] + e[1] * ad[0];
+
 }

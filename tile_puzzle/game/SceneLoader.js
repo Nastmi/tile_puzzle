@@ -31,8 +31,8 @@ export class SceneLoader {
             let baseLoc = scene.grid_location.slice();
             let x = i%3;
             let y = Math.floor(i/3);
-            baseLoc[0] += x*1;
-            baseLoc[2] += y*1;
+            baseLoc[0] += x;
+            baseLoc[2] += y;
             scene.nodes.push({
                 "id": i,
                 "type": "grid_piece",
