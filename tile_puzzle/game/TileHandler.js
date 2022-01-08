@@ -79,7 +79,7 @@ export class TileHandler{
 
         if(!pVis)
             this.pointer.visible = false;
-        if(!eventO)
+        if(globalThis.gui && !eventO)
             globalThis.gui.updateTooltip(0);
         this.pointer.updateTransform(0);
 
@@ -90,9 +90,6 @@ export class TileHandler{
                 globalThis.gui.updatePicked(this.picked, this.selected);
             }
         }
-
-        //Check if all tiles are correct.
-        this.checkWin();
     }
 
     //place the node on a grid, if player is looking at it, and noode exists
@@ -115,8 +112,9 @@ export class TileHandler{
         }
     }
 
+    //Check if all tiles are correct
     checkWin(){
-        let cor = 0;
+        let cor = 8;
         this.scene.traverse(node => {
             if(node.type == "tile" && node.correct)
                 cor++;

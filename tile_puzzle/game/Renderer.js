@@ -93,7 +93,7 @@ export class Renderer {
                 timeLeft = 0;
                 timeM.innerHTML = "time's up : 0s";    
             } else{
-                timeM.innerHTML = "Minimap time left: " + (Math.ceil((StartTime - Date.now()) / 1000)).toString() + "s";
+                timeM.innerHTML = "Minimap time left:</br> " + (Math.ceil((StartTime - Date.now()) / 1000)).toString();
             }
             
             // test draw mini map

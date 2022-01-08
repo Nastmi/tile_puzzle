@@ -5,6 +5,17 @@ export class Gui{
         this.id = id;
     }
 
+    updateGlobalTime(startTime, curTime){
+        let timeDiv = this.guiDiv.querySelector("#time1");
+        let totalTime = Math.ceil(180 - (curTime - startTime)/1000);
+        let min = Math.floor(totalTime / 60);
+        let sec = totalTime - min*60;
+        if(sec < 10)
+            sec = "0" + sec;
+        timeDiv.innerHTML = "Total time left:</br>"+min + ":" + sec;
+        return totalTime;
+    }
+
     updateTooltip(select){
         let tooltip = this.guiDiv.querySelector(".tooltip");
         let text = "Search the maze for tiles and bring them to the center!";

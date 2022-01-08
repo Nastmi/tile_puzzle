@@ -73,24 +73,27 @@ a.back:hover{
 }
 
 .timea{
+    display: flex;
     left: 0.5%;
-    top:27%;
+    top:29%;
     width: 9%;
-    height: 7%;
+    height: 5%;
     font-size: 1.8vh;
-    background-color: rgba(0, 0, 0, 0);
     text-align: center;
-
+    align-items: center;
+    justify-content: center;
 }
 
 .timem{
+    display: flex;
     left: 0.5%;
-    top: 32%;
+    top: 34%;
     width: 9%;
-    height: 7%;
+    height: 5%;
     font-size: 1.8vh;
-    background-color: rgba(0, 0, 0, 0);
     text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .swal2-popup {

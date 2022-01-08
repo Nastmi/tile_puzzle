@@ -12,6 +12,7 @@ import { TileHandler } from './TileHandler.js';
 import { InputHandler } from './InputHandler.js';
 import { Gui } from "./gui.js";
 import { Light } from "./Light.js";
+import { Sound } from "./Sound.js"
 
 class App extends Application {
     start() {
@@ -20,10 +21,9 @@ class App extends Application {
         this.renderer = new Renderer(gl);
         this.time = Date.now();
         this.startTime = this.time;
+        this.totalTime = Date.now();
         this.aspect = 1;
-
         this.light = new Light();
-
         this.pointerlockchangeHandler = this.pointerlockchangeHandler.bind(this);
         document.addEventListener('pointerlockchange', this.pointerlockchangeHandler);
         this.load('../game/scene.json');
@@ -31,7 +31,6 @@ class App extends Application {
 
     async load(uri) {
         const scene = await new SceneLoader().loadScene(uri);
-        globalThis.gui = new Gui(scene.id);
         const builder = new SceneBuilder(scene);
         this.scene = builder.build();
         this.physics = new Physics(this.scene);
@@ -58,7 +57,9 @@ class App extends Application {
         this.renderer.prepare(this.scene);
         //Create a handler for tiles
         this.tileHandler = new TileHandler(this.scene, this.player, scene.num);
+        this.sound = new Sound();
         this.win = false;
+        globalThis.gui = new Gui(scene.id);
     }
 
     enableCamera() {
@@ -86,11 +87,17 @@ class App extends Application {
         const t = this.time = Date.now();
         const dt = (this.time - this.startTime) * 0.001;
         this.startTime = this.time;
+        if(this.totalTime && document.pointerLockElement === this.canvas && globalThis.gui){
+            let timeToEnd = globalThis.gui.updateGlobalTime(this.totalTime, t);
+            if(timeToEnd <= 0){
+                this.totalTime = null;
+                this.handleLoss();
+            }
+        }
         let arr;
         if (this.player) {
             arr = this.player.update(dt);
         }
-
         if(this.camera) {
             this.camera.update(this.player.translation[0], this.player.translation[2]);
         }
@@ -98,7 +105,6 @@ class App extends Application {
         if (this.physics) {
             this.physics.update(dt);
         }
-
         if(this.tileHandler) {
             this.tileHandler.update(dt);
             if(!this.win && this.tileHandler.checkWin()){
@@ -106,9 +112,39 @@ class App extends Application {
                 this.handleWin();
             }
         }
+        if(this.sound)
+            this.sound.update();
+    }
+
+    handleLoss(){
+        document.exitPointerLock();
+        this.canvas.requestPointerLock = null;
+        Swal.fire({
+            title: "You lost!",
+            text: "What do you want to do?",
+            confirmButtonText: "Try again",
+            cancelButtonText: "Go to menu",
+            customClass: {
+                icon: 'icon-right'
+            },
+            iconHtml:"<img src='../common/images/cropped.png' width='168px' height='168px'>",
+            showCancelButton: true,
+            background: "#f5f1d9",
+            allowOutsideClick: false,
+            backdrop: `
+                rgba(0,0,0,0.7)
+            `
+        }).then(function(result){
+            if(result.value)
+                window.location.href = "../html/game.html";
+            else
+                window.location.href = "../index.html";
+        })
     }
 
     handleWin(){
+        document.exitPointerLock();
+        this.canvas.requestPointerLock = null;
         Swal.fire({
             title: "You won!",
             text: "What do you want to do?",
@@ -174,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }).then(function(result){
         if(!result.value)
             window.location.href = "../index.html";
-            canvas.requestPointerLock = canvas.requestPointerLock ||
-            canvas.mozRequestPointerLock;
-            canvas.requestPointerLock()
+        canvas.requestPointerLock = canvas.requestPointerLock ||
+        canvas.mozRequestPointerLock;
+        canvas.requestPointerLock();
     })
 });
