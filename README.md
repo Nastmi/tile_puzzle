@@ -1,5 +1,7 @@
 Projekt pri predmetu računalniška grafika.
+
 Naslov seminarja: Tile Puzzle
+
 Šolsko leto 2021/22
 
 Avtorji:
