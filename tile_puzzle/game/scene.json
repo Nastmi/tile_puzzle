@@ -42,7 +42,11 @@
         "max": [0, -1, 0]
       },
       "texture": 2,
+<<<<<<< HEAD
       "translation": [100, 100, 100],
+=======
+      "translation": [100, 0.5, -100],
+>>>>>>> 0b27774b6bd25ef7359ab324006c58d83e149566
       "rotation": [1.1, 0, 0],
       "scale": [0.5, 0.5, 0.5],
       "visible": false
