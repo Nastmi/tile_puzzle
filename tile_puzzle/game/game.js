@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         html: `You are placed in a dark maze, and you must assemble together a picture out of tiles. 
         Explore the maze to find them and pick them up by pressing <b>E</b> while looking at them. Bring them to the center and assemble
             them on the grid with <b>Q</b>. Move using <b>WASD</b>. Toggle the minimap using <b>M</b>, but beware!
-            You can only use the minimap for 60 seconds in total!`,
+            You can only use the minimap for 60 seconds in total! </br>You only have 6 minutes to complete the maze, or you lose!`,
         confirmButtonText: "Play",
         cancelButtonText: "Go back to menu",
         customClass: {

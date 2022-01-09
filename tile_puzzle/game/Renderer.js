@@ -134,19 +134,22 @@ export class Renderer {
 
             scene.traverse(
                 node => {
-                    matrixCameraStack.push(mat4.clone(matrixCamera));
-                    mat4.mul(matrixCamera, matrixCamera, node.transform);
-                    if (node.gl.vao) {
-                        gl.bindVertexArray(node.gl.vao);
-                        gl.uniformMatrix4fv(program1.uniforms.uViewModel, false, matrixCamera);
-                        gl.activeTexture(gl.TEXTURE0);
-                        gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
-                        gl.uniform1i(program1.uniforms.uTexture, 0);
-                        gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
+                    if(node.visible){ 
+                        matrixCameraStack.push(mat4.clone(matrixCamera));
+                        mat4.mul(matrixCamera, matrixCamera, node.transform);
+                        if (node.gl.vao) {
+                            gl.bindVertexArray(node.gl.vao);
+                            gl.uniformMatrix4fv(program1.uniforms.uViewModel, false, matrixCamera);
+                            gl.activeTexture(gl.TEXTURE0);
+                            gl.bindTexture(gl.TEXTURE_2D, node.gl.texture);
+                            gl.uniform1i(program1.uniforms.uTexture, 0);
+                            gl.drawElements(gl.TRIANGLES, node.gl.indices, gl.UNSIGNED_SHORT, 0);
+                        }
                     }
                 },
-                () => {
-                    matrixCamera = matrixCameraStack.pop();
+                node => {
+                    if(node.visible)
+                        matrixCamera = matrixCameraStack.pop();
                 }
             );
         }

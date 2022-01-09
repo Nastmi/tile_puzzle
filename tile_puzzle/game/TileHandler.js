@@ -85,7 +85,7 @@ export class TileHandler{
 
         //select the node corresppodning to the currently pressed digit
         for(let i = 0; i < this.picked.length; i++){
-            if(globalThis.onceKeys["Digit"+(i+1)]){
+            if(globalThis.onceKeys["Digit"+(i+1)] || globalThis.onceKeys["Numpad"+(i+1)]){
                 this.selected = i;
                 globalThis.gui.updatePicked(this.picked, this.selected);
             }
